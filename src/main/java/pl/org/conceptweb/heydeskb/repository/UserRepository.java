@@ -1,7 +1,7 @@
-package pl.com.conceptweb.uniappbackend.repository;
+package pl.org.conceptweb.heydeskb.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.com.conceptweb.uniappbackend.model.User;
+import pl.org.conceptweb.heydeskb.model.User;
 
 import java.util.Optional;
 

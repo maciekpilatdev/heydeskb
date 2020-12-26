@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.model;
+package pl.org.conceptweb.heydeskb.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.model;
+package pl.org.conceptweb.heydeskb.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -101,8 +101,4 @@ public class User {
         this.isDeleted = isDeleted;
     }
 
-
-    
-    
-   
 }

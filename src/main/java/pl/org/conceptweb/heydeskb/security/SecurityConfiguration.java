@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.security;
+package pl.org.conceptweb.heydeskb.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.com.conceptweb.uniappbackend.filters.JwtRequestFilter;
+import pl.org.conceptweb.heydeskb.filters.JwtRequestFilter;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -37,6 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/*").permitAll()
                 .antMatchers("/login").permitAll() //.anyRequest().authenticated()
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/desk").permitAll()
+                .antMatchers("/dropdown/*").permitAll()
 
                 .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()

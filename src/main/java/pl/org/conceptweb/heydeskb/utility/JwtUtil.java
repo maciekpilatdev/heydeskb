@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.utility;
+package pl.org.conceptweb.heydeskb.utility;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

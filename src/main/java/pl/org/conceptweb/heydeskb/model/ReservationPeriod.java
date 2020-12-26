@@ -1,13 +1,14 @@
 package pl.org.conceptweb.heydeskb.model;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class HttpResponseWrapper {
+public class ReservationPeriod {
 
-    public String message;
-    public List result;
+    private Long id;
+    private Long start;
+    private Long end;
+    private Long userId;
 }

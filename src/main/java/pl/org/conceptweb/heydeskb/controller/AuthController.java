@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.controller;
+package pl.org.conceptweb.heydeskb.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pl.com.conceptweb.uniappbackend.model.AuthenticationRequest;
-import pl.com.conceptweb.uniappbackend.model.HttpResponseWrapper;
-import pl.com.conceptweb.uniappbackend.model.User;
-import pl.com.conceptweb.uniappbackend.repository.UserRepository;
-import pl.com.conceptweb.uniappbackend.utility.JwtUtil;
+import pl.org.conceptweb.heydeskb.model.AuthenticationRequest;
+import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
+import pl.org.conceptweb.heydeskb.model.User;
+import pl.org.conceptweb.heydeskb.repository.UserRepository;
+import pl.org.conceptweb.heydeskb.utility.JwtUtil;
 
 @Log
 @RestController
@@ -73,7 +73,8 @@ public class AuthController {
     }
 
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpResponseWrapper createAuthebticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         User user = new User();
         HttpResponseWrapper httpResponseWrapper;

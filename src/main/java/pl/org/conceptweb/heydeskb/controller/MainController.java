@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.controller;
+package pl.org.conceptweb.heydeskb.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.security;
+package pl.org.conceptweb.heydeskb.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import lombok.extern.java.Log;
-import pl.com.conceptweb.uniappbackend.model.User;
+import pl.org.conceptweb.heydeskb.model.User;
 
 @Log
 public class MyUserDetails implements UserDetails {

@@ -1,4 +1,4 @@
-package pl.com.conceptweb.uniappbackend.filters;
+package pl.org.conceptweb.heydeskb.filters;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.com.conceptweb.uniappbackend.security.MyUserDetailsService;
-import pl.com.conceptweb.uniappbackend.utility.JwtUtil;
+import pl.org.conceptweb.heydeskb.security.MyUserDetailsService;
+import pl.org.conceptweb.heydeskb.utility.JwtUtil;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
