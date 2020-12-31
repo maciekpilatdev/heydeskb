@@ -19,7 +19,7 @@ public class DeskConverter {
                 deskDb.getId(),
                 deskDb.getBuildingId(),
                 deskDb.getFloorId(),
-                deskDb.getRoom().getId(),
+                deskDb.getRoomId().getId(),
                 deskDb.getDesksInRoom(),
                 deskDb.getNextToWindow(),
                 deskDb.getDescription(),
