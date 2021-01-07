@@ -23,6 +23,7 @@ public class User {
     private String jwtExpirationTime;
     private Boolean isDeleted;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<DeskReservationDb> deskReservationDb;
     
     public User(){}

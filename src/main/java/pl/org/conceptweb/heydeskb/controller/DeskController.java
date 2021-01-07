@@ -24,6 +24,7 @@ import pl.org.conceptweb.heydeskb.model.DeskDb;
 import pl.org.conceptweb.heydeskb.repository.DeskReservationDbRepository;
 import pl.org.conceptweb.heydeskb.utility.DeskUtil;
 import pl.org.conceptweb.heydeskb.model.DeskReservation;
+import pl.org.conceptweb.heydeskb.model.User;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
 
 @RestController
@@ -41,6 +42,8 @@ public class DeskController {
     DeskReservationConverter deskReservationConverter;
     @Autowired
     UserRepository userRepository;
+//    @Autowired
+//    Principal principal;
 
     @PostMapping()
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
@@ -82,11 +85,13 @@ public class DeskController {
         );
     }
 
-//    @GetMapping("/reservation/user")
-     @GetMapping("/dupa")
+    @GetMapping("/reservation/user")
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    public HttpResponseWrapper getAllReservationsByUser(@RequestParam Long userId) {
-        log.log(Level.INFO, "DeskController: getAllReservationsByUser: userId: " + userId);
-        return new HttpResponseWrapper("ok", deskReservationDbRepository.getAllByUser(userId));
+    public HttpResponseWrapper getAllReservationsByUser(Principal principal) {
+        log.log(Level.INFO, "DeskController: getAllReservationsByUser: userId: Principal: " + principal.toString());
+        User loggedUser = userRepository.findByUserName(principal.getName()).get();
+        
+        log.log(Level.INFO, "DeskController: getAllReservationsByUser: userId: " + loggedUser.getId());
+        return new HttpResponseWrapper("ok", deskReservationDbRepository.getAllByUser(loggedUser.getId()));
     }
 }

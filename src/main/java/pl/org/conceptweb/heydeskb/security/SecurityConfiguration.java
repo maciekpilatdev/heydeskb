@@ -38,9 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
-                .antMatchers("/desk").hasAuthority("USER")
+                .antMatchers("/desk/reservation/*").hasAuthority("USER")
                 .antMatchers("/desk/*").hasAuthority("USER")
-                .antMatchers("/desk/reservation/user").hasAuthority("USER")
+                .antMatchers("/desk").hasAuthority("USER")
                 .antMatchers("/dropdown/*").permitAll()
 
                 .anyRequest().authenticated().and().
