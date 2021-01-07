@@ -1,6 +1,7 @@
 package pl.org.conceptweb.heydeskb.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ public class FloorDb {
     private String name;
     @ManyToOne()
     @JoinColumn(name="buildingId")
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private BuildingDb building;
     @OneToMany(mappedBy = "floor")
     @JsonIgnore

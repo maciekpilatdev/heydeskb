@@ -78,7 +78,7 @@ public class AuthController {
     public HttpResponseWrapper createAuthebticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         User user = new User();
         HttpResponseWrapper httpResponseWrapper;
-
+        
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 

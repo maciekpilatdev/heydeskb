@@ -1,7 +1,9 @@
 package pl.org.conceptweb.heydeskb.model;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import pl.org.conceptweb.heydeskb.model.DeskReservation;
 
 @Data
 @AllArgsConstructor
@@ -15,4 +17,5 @@ public class Desk {
     private String description;
     private Boolean active;
     private Boolean deleted;
+    private List<DeskReservation> deskReservations;
 }

@@ -9,9 +9,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Level;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 
 @Service
+@Log
 public class JwtUtil {
 
     @Value("${configuration.jwt.secret.key}")
@@ -61,6 +64,7 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
+        log.log(Level.INFO, "JwtUtil: validateToken: START: Recieve TOKEN: " + token + " UserDetails: " + userDetails);
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

@@ -1,6 +1,6 @@
 package pl.org.conceptweb.heydeskb.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,57 +16,59 @@ import javax.persistence.Table;
 public class DeskDb {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long deskId;
+    private Long id;
     private Long buildingId;
     private Long floorId;
     @ManyToOne
-    @JoinColumn(name = "roomId")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private RoomDb roomId;    
+    @JoinColumn()
+    private RoomDb roomDb;    
     private Long desksInRoom;
     private Boolean nextToWindow;
     private String description;
     private Boolean active;
     private Boolean deleted;
+    @JsonIgnore
     @OneToMany(mappedBy = "deskId")
     private List<DeskReservationDb> deskReservations;
 
     @Override
     public String toString() {
-        return "DeskDb{" + "deskId=" + deskId + ", buildingId=" + buildingId + ", floorId=" + floorId + ", roomId=" + roomId + ", desksInRoom=" + desksInRoom + ", nextToWindow=" + nextToWindow + '}';
+        return "DeskDb{" + "deskId=" + getId() + ", buildingId=" + getBuildingId() + ", floorId=" + getFloorId() + ", roomId=" + getRoomDb() + ", desksInRoom=" + getDesksInRoom() + ", nextToWindow=" + getNextToWindow() + '}';
     }
 
     public DeskDb(){};
-    
-    public DeskDb(Long buildingId, Long floorId, RoomDb roomId, Long desksInRoom, Boolean nextToWindow, String description, Boolean active, Boolean deleted) {
+
+    public DeskDb(Long id, Long buildingId, Long floorId, RoomDb roomDb, Long desksInRoom, Boolean nextToWindow, String description, Boolean active, Boolean deleted, List<DeskReservationDb> deskReservations) {
+        this.id = id;
         this.buildingId = buildingId;
         this.floorId = floorId;
-        this.roomId = roomId;
+        this.roomDb = roomDb;
         this.desksInRoom = desksInRoom;
         this.nextToWindow = nextToWindow;
-        this.description=description;
-        this.active=active;
-        this.deleted=deleted;
+        this.description = description;
+        this.active = active;
+        this.deleted = deleted;
+        this.deskReservations = deskReservations;
+    }
+    
+    public DeskDb(Long buildingId, Long floorId, RoomDb roomDb, Long desksInRoom, Boolean nextToWindow, String description, Boolean active, Boolean deleted, List<DeskReservationDb> deskReservations) {
+        this.buildingId = buildingId;
+        this.floorId = floorId;
+        this.roomDb = roomDb;
+        this.desksInRoom = desksInRoom;
+        this.nextToWindow = nextToWindow;
+        this.description = description;
+        this.active = active;
+        this.deleted = deleted;
+        this.deskReservations = deskReservations;
     }
 
-    public DeskDb(Long deskId, Long buildingId, Long floorId, RoomDb roomId, Long desksInRoom, Boolean nextToWindow, String description, Boolean active, Boolean deleted) {
-        this.deskId = deskId;
-        this.buildingId = buildingId;
-        this.floorId = floorId;
-        this.roomId = roomId;
-        this.desksInRoom = desksInRoom;
-        this.nextToWindow = nextToWindow;
-        this.description=description;
-        this.active=active;
-        this.deleted=deleted;
-    }
-   
     public Long getId() {
-        return deskId;
+        return id;
     }
 
     public void setId(Long id) {
-        this.deskId = deskId;
+        this.id = id;
     }
 
     public Long getBuildingId() {
@@ -85,12 +87,12 @@ public class DeskDb {
         this.floorId = floorId;
     }
 
-    public RoomDb getRoomId() {
-        return roomId;
+    public RoomDb getRoomDb() {
+        return roomDb;
     }
 
-    public void setRoomId(RoomDb roomId) {
-        this.roomId = roomId;
+    public void setRoomDb(RoomDb roomDb) {
+        this.roomDb = roomDb;
     }
 
     public Long getDesksInRoom() {

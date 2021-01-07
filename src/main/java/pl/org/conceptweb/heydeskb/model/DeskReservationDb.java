@@ -1,5 +1,6 @@
 package pl.org.conceptweb.heydeskb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,12 +13,14 @@ public class DeskReservationDb {
     @Id
     @GeneratedValue
     private Long id;
-    //Long userId;
     @ManyToOne
     @JoinColumn(name = "deskId")
     private DeskDb deskId;
     private Long startReservation;
     private Long endReservation;
+    @ManyToOne()
+    @JoinColumn(name = "userId")
+    private User user;
     
     public DeskReservationDb(){};
 
@@ -28,6 +31,14 @@ public class DeskReservationDb {
         this.endReservation = endReservation;
     }
 
+    public DeskReservationDb(Long id, DeskDb deskId, Long startReservation, Long endReservation, User user) {
+        this.id = id;
+        this.deskId = deskId;
+        this.startReservation = startReservation;
+        this.endReservation = endReservation;
+        this.user = user;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -59,5 +70,20 @@ public class DeskReservationDb {
     public void setEndReservation(Long endReservation) {
         this.endReservation = endReservation;
     }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
 }
 

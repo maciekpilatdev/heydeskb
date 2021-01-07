@@ -10,7 +10,7 @@ import pl.org.conceptweb.heydeskb.model.DeskDb;
 public interface DeskDbRepository extends JpaRepository<DeskDb, Long>{
 
 @Query("select d from DeskDb d "
-        + "join d.roomId r "
+        + "join d.roomDb r "
         + "join r.floor f "
         + "join f.building b "
         + "where r.id = ?1 and f.id = ?2 and b.id=?3")

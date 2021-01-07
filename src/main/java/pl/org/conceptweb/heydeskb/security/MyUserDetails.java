@@ -26,11 +26,12 @@ public class MyUserDetails implements UserDetails {
         this.authorities = Arrays.stream(user.getAuthoritys().split(","))
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
+        log.log(Level.INFO, "MyUserDetails: authorities: " + authorities.toString());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        log.log(Level.INFO, "authorities: " + authorities.toString());
+        log.log(Level.INFO, "MyUserDetails: MyUserDetails: getAuthorities: authorities: " + authorities.toString());
         return authorities;
     }
 

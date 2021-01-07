@@ -96,3 +96,4 @@ public class DropdownController {
         return hrw;
     }
 }
+//http://localhost:8080/dropdown/desk?roomId=1&floorId=1&buildingId=1

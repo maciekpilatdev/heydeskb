@@ -11,5 +11,6 @@ public class DeskReservation {
     //private Long userId;
     private Long deskId;
     private Long startReservation;
-    private Long endReservation;    
+    private Long endReservation;
+    private Long userId;
 }

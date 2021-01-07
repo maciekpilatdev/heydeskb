@@ -1,9 +1,12 @@
 package pl.org.conceptweb.heydeskb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +22,9 @@ public class User {
     private String jwt;
     private String jwtExpirationTime;
     private Boolean isDeleted;
-
+    @OneToMany(mappedBy = "user")
+    private List<DeskReservationDb> deskReservationDb;
+    
     public User(){}
 
     public User(String userName, String password, boolean active, String authoritys, String jwt, String jwtExpirationTime, Boolean isDeleted) {
@@ -31,7 +36,18 @@ public class User {
         this.jwtExpirationTime = jwtExpirationTime;
         this.isDeleted = isDeleted;
     }
-
+    
+    public User(String userName, String password, boolean active, String authoritys, String jwt, String jwtExpirationTime, Boolean isDeleted, List<DeskReservationDb> deskReservationDb) {
+        this.userName = userName;
+        this.password = password;
+        this.active = active;
+        this.authoritys = authoritys;
+        this.jwt = jwt;
+        this.jwtExpirationTime = jwtExpirationTime;
+        this.isDeleted = isDeleted;
+        this.deskReservationDb = deskReservationDb;
+    }
+    
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", userName=" + userName + ", password=" + password + ", active=" + active + ", authoritys=" + authoritys + ", jwt=" + jwt + ", jwtExpirationTime=" + jwtExpirationTime + ", isDeleted=" + isDeleted + '}';
@@ -99,6 +115,20 @@ public class User {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    /**
+     * @return the deskReservationDb
+     */
+    public List<DeskReservationDb> getDeskReservationDb() {
+        return deskReservationDb;
+    }
+
+    /**
+     * @param deskReservationDb the deskReservationDb to set
+     */
+    public void setDeskReservationDb(List<DeskReservationDb> deskReservationDb) {
+        this.deskReservationDb = deskReservationDb;
     }
 
 }
