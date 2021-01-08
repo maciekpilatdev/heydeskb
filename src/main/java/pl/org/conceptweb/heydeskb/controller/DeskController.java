@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,8 +43,6 @@ public class DeskController {
     DeskReservationConverter deskReservationConverter;
     @Autowired
     UserRepository userRepository;
-//    @Autowired
-//    Principal principal;
 
     @PostMapping()
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
@@ -53,6 +52,12 @@ public class DeskController {
         return httpResponseWrapper;
     }
 
+    @DeleteMapping("/reservation")
+    public HttpResponseWrapper cancelDeskReservation(@RequestParam Long reservationId){
+        deskReservationDbRepository.deleteById(reservationId);
+        return new HttpResponseWrapper("ok", null);
+    }
+    
     @GetMapping("/reservation")
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
     public HttpResponseWrapper getAvailableDesksInPeriod(
