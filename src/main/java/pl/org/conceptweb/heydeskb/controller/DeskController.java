@@ -53,8 +53,9 @@ public class DeskController {
     }
 
     @DeleteMapping("/reservation")
-    public HttpResponseWrapper cancelDeskReservation(@RequestParam Long reservationId){
-        deskReservationDbRepository.deleteById(reservationId);
+    public HttpResponseWrapper cancelDeskReservation(@RequestParam Long deskReservationId){
+        log.log(Level.INFO, "START DeskController: cancelDeskReservation: deskReservationId: " + deskReservationId);
+        deskReservationDbRepository.deleteById(deskReservationId);
         return new HttpResponseWrapper("ok", null);
     }
     

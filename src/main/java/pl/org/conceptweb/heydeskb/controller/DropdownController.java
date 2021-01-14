@@ -54,6 +54,7 @@ public class DropdownController {
         } catch (Exception e) {
             hrw = new HttpResponseWrapper("error: " + e, null);
         }
+        log.log(Level.WARNING, "getFloors: " + hrw.getResult());
         return hrw;
     }
 
