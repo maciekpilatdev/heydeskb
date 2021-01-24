@@ -1,37 +1,37 @@
 package pl.org.conceptweb.heydeskb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class CompanyDb {
-@Id
-@GeneratedValue
-private Long id;
-private String name;
-private String mail;
-private String phone;
-private String street;
-private Long streetNumber;
-private String postalCode;
-private String city;
-private String country;
 
-    public CompanyDb() {}
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String name;
+    private String mail;
+    private String phone;
+    private String street;
+    private Long streetNumber;
+    private String postalCode;
+    private String city;
+    private String country;
+    @OneToMany(mappedBy = "companyDb")
+    @JsonIgnore
+    List<BuildingDb> buildingDb;
+    @OneToMany(mappedBy = "companyDb")
+    @JsonIgnore
+    List<User> users;
 
-    public CompanyDb(String name, String mail, String phone, String street, Long streetNumber, String postalCode, String city, String country) {
-        this.name = name;
-        this.mail = mail;
-        this.phone = phone;
-        this.street = street;
-        this.streetNumber = streetNumber;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
+    public CompanyDb() {
     }
 
-    public CompanyDb(Long id, String name, String mail, String phone, String street, Long streetNumber, String postalCode, String city, String country) {
+    public CompanyDb(Long id, String name, String mail, String phone, String street, Long streetNumber, String postalCode, String city, String country, List<BuildingDb> buildingDb, List<User> users) {
         this.id = id;
         this.name = name;
         this.mail = mail;
@@ -41,8 +41,22 @@ private String country;
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
+        this.buildingDb = buildingDb;
+        this.users = users;
     }
-    
+
+    public CompanyDb(String name, String mail, String phone, String street, Long streetNumber, String postalCode, String city, String country, List<BuildingDb> buildingDb, List<User> users) {
+        this.name = name;
+        this.mail = mail;
+        this.phone = phone;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.country = country;
+        this.buildingDb = buildingDb;
+        this.users = users;
+    }
 
     public Long getId() {
         return id;
@@ -115,4 +129,21 @@ private String country;
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public List<BuildingDb> getBuildingDb() {
+        return buildingDb;
+    }
+
+    public void setBuildingDb(List<BuildingDb> buildingDb) {
+        this.buildingDb = buildingDb;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+    
 }

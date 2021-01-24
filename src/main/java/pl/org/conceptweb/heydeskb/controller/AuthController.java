@@ -63,7 +63,8 @@ public class AuthController {
                     "user",
                     null,
                     null,
-                    false
+                    false,
+                    null
             ))));
         } else {
             wrapper = new HttpResponseWrapper("username not available", new ArrayList());
@@ -92,7 +93,9 @@ public class AuthController {
                     user.getAuthoritys(),
                     jwt,
                     Long.toString(System.currentTimeMillis() + jwtValidTime),
-                    false)));
+                    false,
+                    user.getCompanyDb()
+            )));
 
         } catch (BadCredentialsException e) {
             System.out.println("ERROR!");

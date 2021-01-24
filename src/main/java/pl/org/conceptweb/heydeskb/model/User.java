@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,10 +27,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<DeskReservationDb> deskReservationDb;
+    @ManyToOne
+    @JoinColumn()
+    CompanyDb companyDb;
     
     public User(){}
 
-    public User(String userName, String password, boolean active, String authoritys, String jwt, String jwtExpirationTime, Boolean isDeleted) {
+    public User(String userName, String password, boolean active, String authoritys, String jwt, String jwtExpirationTime, Boolean isDeleted, CompanyDb companyDb) {
         this.userName = userName;
         this.password = password;
         this.active = active;
@@ -36,9 +41,10 @@ public class User {
         this.jwt = jwt;
         this.jwtExpirationTime = jwtExpirationTime;
         this.isDeleted = isDeleted;
+        this.companyDb = companyDb;
     }
     
-    public User(String userName, String password, boolean active, String authoritys, String jwt, String jwtExpirationTime, Boolean isDeleted, List<DeskReservationDb> deskReservationDb) {
+    public User(String userName, String password, boolean active, String authoritys, String jwt, String jwtExpirationTime, Boolean isDeleted, List<DeskReservationDb> deskReservationDb, CompanyDb companyDb) {
         this.userName = userName;
         this.password = password;
         this.active = active;
@@ -47,6 +53,20 @@ public class User {
         this.jwtExpirationTime = jwtExpirationTime;
         this.isDeleted = isDeleted;
         this.deskReservationDb = deskReservationDb;
+        this.companyDb = companyDb;
+    }
+
+    public User(Long id, String userName, String password, boolean active, String authoritys, String jwt, String jwtExpirationTime, Boolean isDeleted, List<DeskReservationDb> deskReservationDb, CompanyDb companyDb) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.active = active;
+        this.authoritys = authoritys;
+        this.jwt = jwt;
+        this.jwtExpirationTime = jwtExpirationTime;
+        this.isDeleted = isDeleted;
+        this.deskReservationDb = deskReservationDb;
+        this.companyDb = companyDb;
     }
     
     @Override
@@ -118,18 +138,20 @@ public class User {
         this.isDeleted = isDeleted;
     }
 
-    /**
-     * @return the deskReservationDb
-     */
     public List<DeskReservationDb> getDeskReservationDb() {
         return deskReservationDb;
     }
 
-    /**
-     * @param deskReservationDb the deskReservationDb to set
-     */
     public void setDeskReservationDb(List<DeskReservationDb> deskReservationDb) {
         this.deskReservationDb = deskReservationDb;
+    }
+
+    public CompanyDb getCompanyDb() {
+        return companyDb;
+    }
+
+    public void setCompanyDb(CompanyDb companyDb) {
+        this.companyDb = companyDb;
     }
 
 }

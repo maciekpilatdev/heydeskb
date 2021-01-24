@@ -1,5 +1,6 @@
 package pl.org.conceptweb.heydeskb.model;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,5 +15,7 @@ private String street;
 private Long streetNumber;
 private String postalCode;
 private String city;
-private String country;    
+private String country;
+private List<Building> buildings;
+private List<UserTrans> usersTrans;
 }

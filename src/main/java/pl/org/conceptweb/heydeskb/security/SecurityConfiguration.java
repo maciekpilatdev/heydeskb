@@ -41,7 +41,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/desk/reservation/*").hasAuthority("USER")
                 .antMatchers("/desk/*").hasAuthority("USER")
                 .antMatchers("/desk").hasAuthority("USER")
+                .antMatchers("/company").permitAll()
                 .antMatchers("/dropdown/*").permitAll()
+                .antMatchers("/stats/*").permitAll()
 
                 .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
