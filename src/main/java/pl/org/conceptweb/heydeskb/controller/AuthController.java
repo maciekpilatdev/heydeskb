@@ -54,7 +54,9 @@ public class AuthController {
     private Long jwtValidTime;
 
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE
+//            , produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public HttpResponseWrapper signUp(@RequestBody User loginData) {
 
         HttpResponseWrapper wrapper;
@@ -78,7 +80,9 @@ public class AuthController {
 
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/login", method = RequestMethod.POST
+//            , produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public HttpResponseWrapper createAuthebticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         User user = new User();
         HttpResponseWrapper httpResponseWrapper;
