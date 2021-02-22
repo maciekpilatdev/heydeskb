@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import pl.org.conceptweb.heydeskb.constans.Constans;
+import pl.org.conceptweb.heydeskb.converter.UserConverter;
 import pl.org.conceptweb.heydeskb.model.AuthenticationRequest;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.model.User;
@@ -47,6 +49,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    UserConverter userConverter;
+
     @Value("${configuration.jwt.valid}")
     private Long jwtValidTime;
 
@@ -56,7 +61,7 @@ public class AuthController {
 
         HttpResponseWrapper wrapper;
         if (userRepository.findByUserName(loginData.getUserName()).isEmpty()) {
-            wrapper = new HttpResponseWrapper("ok", Arrays.asList(userRepository.save(new User(
+            wrapper = new HttpResponseWrapper(Constans.OK, Constans.SIGN_UP_SUCCESS_MESSAGE, Arrays.asList(userRepository.save(new User(
                     loginData.getUserName(),
                     passwordEncoder.encode(loginData.getPassword()),
                     true,
@@ -67,26 +72,27 @@ public class AuthController {
                     null
             ))));
         } else {
-            wrapper = new HttpResponseWrapper("username not available", new ArrayList());
+            wrapper = new HttpResponseWrapper(Constans.ERROR, Constans.SIGN_UP_ERROR_MESSAGE, new ArrayList());
         }
         log.log(Level.WARNING, "SIGN UP USER: " + wrapper.toString());
         return wrapper;
     }
 
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    
+
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpResponseWrapper createAuthebticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         User user = new User();
         HttpResponseWrapper httpResponseWrapper;
-        
+
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
             final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
             final String jwt = jwtUtil.generateToken(userDetails);
             user = userRepository.findByUserName(authenticationRequest.getUsername()).get();
-            httpResponseWrapper = new HttpResponseWrapper("ok", Arrays.asList(new User(
+
+            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.CREATE_AUTHEBTICATION_TOKEN_SUCCESS_MESSAGE, Arrays.asList(userConverter.userToUserTrans(new User(
                     userDetails.getUsername(),
                     userDetails.getPassword(),
                     user.isActive(),
@@ -95,35 +101,32 @@ public class AuthController {
                     Long.toString(System.currentTimeMillis() + jwtValidTime),
                     false,
                     user.getCompanyDb()
-            )));
+            ))));
 
         } catch (BadCredentialsException e) {
-            System.out.println("ERROR!");
-            httpResponseWrapper = new HttpResponseWrapper("error: " + e, Arrays.asList(user));
+            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), Arrays.asList(user));
         }
         return httpResponseWrapper;
     }
 
-    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, allowedHeaders = "*", methods = {RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.GET}, maxAge = 3600)
-    @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
-    public HttpResponseWrapper deleteUser(@RequestHeader("Authorization") String jwt, Principal principal) {
-        System.out.println("DZIAŁAM");
-        HttpResponseWrapper httpResponseWrapper = null;
-        User user = userRepository.findByUserName(principal.getName()).get();
-
-        if (user.getUserName() == principal.getName()) {
-            user.setIsDeleted(Boolean.TRUE);
-            userRepository.save(user);
-            httpResponseWrapper = new HttpResponseWrapper("ok", Arrays.asList(userRepository.save(user)));
-        } else {
-            httpResponseWrapper = new HttpResponseWrapper("error", Arrays.asList(new User()));
-        }
-
-        return httpResponseWrapper;
-    }
+//    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, allowedHeaders = "*", methods = {RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.GET}, maxAge = 3600)
+//    @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
+//    public HttpResponseWrapper deleteUser(@RequestHeader("Authorization") String jwt, Principal principal) {
+//        HttpResponseWrapper httpResponseWrapper;
+//        User user = userRepository.findByUserName(principal.getName()).get();
+//
+//        if (user.getUserName() == principal.getName()) {
+//            user.setIsDeleted(Boolean.TRUE);
+//            userRepository.save(user);
+//            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_USER_BY_HIMSELF_SUCCESS_MESSAGE, Arrays.asList(userRepository.save(user)));
+//        } else {
+//            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.DELETE_USER_BY_HIMSELF_ERROR_MESSAGE, Arrays.asList(new User()));
+//        }
+//        return httpResponseWrapper;
+//    }
 
     @GetMapping("/access_error")
     public String accessError() {
-        return "Access denied!";
+        return Constans.ACCESS_ERROR_MESSAGE;
     }
 }

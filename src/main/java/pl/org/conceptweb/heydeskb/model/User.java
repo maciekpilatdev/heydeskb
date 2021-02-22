@@ -26,7 +26,7 @@ public class User {
     private Boolean isDeleted;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<DeskReservationDb> deskReservationDb;
+    private List<DeskReservationDb> deskReservationsDb;
     @ManyToOne
     @JoinColumn()
     CompanyDb companyDb;
@@ -52,7 +52,7 @@ public class User {
         this.jwt = jwt;
         this.jwtExpirationTime = jwtExpirationTime;
         this.isDeleted = isDeleted;
-        this.deskReservationDb = deskReservationDb;
+        this.deskReservationsDb = deskReservationDb;
         this.companyDb = companyDb;
     }
 
@@ -65,7 +65,7 @@ public class User {
         this.jwt = jwt;
         this.jwtExpirationTime = jwtExpirationTime;
         this.isDeleted = isDeleted;
-        this.deskReservationDb = deskReservationDb;
+        this.deskReservationsDb = deskReservationDb;
         this.companyDb = companyDb;
     }
     
@@ -138,12 +138,12 @@ public class User {
         this.isDeleted = isDeleted;
     }
 
-    public List<DeskReservationDb> getDeskReservationDb() {
-        return deskReservationDb;
+    public List<DeskReservationDb> getDeskReservationsDb() {
+        return deskReservationsDb;
     }
 
-    public void setDeskReservationDb(List<DeskReservationDb> deskReservationDb) {
-        this.deskReservationDb = deskReservationDb;
+    public void setDeskReservationsDb(List<DeskReservationDb> deskReservationsDb) {
+        this.deskReservationsDb = deskReservationsDb;
     }
 
     public CompanyDb getCompanyDb() {

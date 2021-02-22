@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.org.conceptweb.heydeskb.constans.Constans;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.repository.CompanyDbRepository;
 import pl.org.conceptweb.heydeskb.model.HttpKeyValue;
@@ -32,6 +33,6 @@ public class PortalStatsController {
         portalStats.add(new HttpKeyValue("totalNumberOfReservations", String.valueOf(deskReservationDbRepository.findAll().size())));
         portalStats.add(new HttpKeyValue("numberOfReservationsDaily", "not ready yet"));
 
-        return new HttpResponseWrapper("ok", portalStats);
+        return new HttpResponseWrapper(Constans.OK, Constans.BASIC_PORTAL_STATS_SUCCESS_MESSAGE, portalStats);
     }
 }

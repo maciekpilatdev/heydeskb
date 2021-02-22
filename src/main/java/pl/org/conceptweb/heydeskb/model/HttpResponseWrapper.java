@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class HttpResponseWrapper {
 
+    public String status;
     public String message;
     public List result;
 }

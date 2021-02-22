@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.org.conceptweb.heydeskb.model.User;
 import pl.org.conceptweb.heydeskb.model.UserTrans;
+import pl.org.conceptweb.heydeskb.repository.CompanyDbRepository;
 
 @Component
 @Log
@@ -17,6 +18,8 @@ public class UserConverter {
     DeskReservationConverter deskReservationConverter;
     @Autowired
     CompanyConverter companyConverter;
+    @Autowired
+    CompanyDbRepository companyDbRepository;
 
     public UserTrans userToUserTrans(User user) {
 
@@ -29,8 +32,8 @@ public class UserConverter {
                 user.getJwt(),
                 user.getJwtExpirationTime(),
                 user.getIsDeleted(),
-                deskReservationConverter.deskReservationsDbToDeskReservations(user.getDeskReservationDb()),
-                companyConverter.companyDbToCompany(user.getCompanyDb())
+                deskReservationConverter.deskReservationsDbToIdList(user.getDeskReservationsDb()),
+                user.getCompanyDb().getId()
         );
     }
 
@@ -44,8 +47,8 @@ public class UserConverter {
                 userTrans.getJwt(),
                 userTrans.getJwtExpirationTime(),
                 userTrans.getIsDeleted(),
-                deskReservationConverter.deskReservationsToDeskReservationsDb(userTrans.getDeskReservation()),
-                companyConverter.companyToCompanyDb(userTrans.getCompany())
+                deskReservationConverter.idListToDeskReservationsDb(userTrans.getDeskReservations()),
+                companyDbRepository.getOne(userTrans.getCompany())
         );
     }
 
@@ -56,9 +59,9 @@ public class UserConverter {
                 usersTrans.add(userToUserTrans(user));
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "UserConverter: usersToUsersTrans: " + e);
+            log.log(Level.WARNING, "ERROR: UserConverter: usersToUsersTrans: " + e);
         }
-        return null;
+        return usersTrans;
     }
 
     public List<User> usersTransToUsers(List<UserTrans> usersTrans) {
@@ -68,8 +71,8 @@ public class UserConverter {
                 users.add(userTransToUser(userTrans));
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "UserConverter: usersTransToUsers: " + e);
+            log.log(Level.WARNING, "ERROR: UserConverter: usersTransToUsers: " + e);
         }
-        return null;
+        return users;
     }
 }

@@ -15,6 +15,6 @@ public class UserTrans {
     private String jwt;
     private String jwtExpirationTime;
     private Boolean isDeleted;
-    private List<DeskReservation> deskReservation;
-    private Company company;
+    private List<Long> deskReservations;
+    private Long company;
 }

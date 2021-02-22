@@ -30,20 +30,41 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                
                 .authorizeRequests()
-                .antMatchers("/test").hasAuthority("USER")
-                .antMatchers("/admin").hasAuthority("ADMIN")
-                .antMatchers("/user").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/").permitAll()
+                .antMatchers("/test").permitAll() //.hasAuthority("USER")
                 .antMatchers("/h2-console/*").permitAll()
+                
+                .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
-                .antMatchers("/desk/reservation/*").hasAuthority("USER")
-                .antMatchers("/desk/*").hasAuthority("USER")
-                .antMatchers("/desk").hasAuthority("USER")
+                
+                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
+                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
+                                
+                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
+                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
+                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
                 .antMatchers("/company").permitAll()
                 .antMatchers("/dropdown/*").permitAll()
                 .antMatchers("/stats/*").permitAll()
+                .antMatchers("/user/*").permitAll()
+                
+//                .authorizeRequests()
+//                .antMatchers("/test").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
+//                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/h2-console/*").permitAll()
+//                .antMatchers("/login").permitAll()
+//                .antMatchers("/signup").permitAll()
+//                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/company").permitAll()
+//                .antMatchers("/dropdown/*").permitAll()
+//                .antMatchers("/stats/*").permitAll()
+//                .antMatchers("/user/*").permitAll()
 
                 .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()

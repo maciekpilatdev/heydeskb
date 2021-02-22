@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import pl.org.conceptweb.heydeskb.model.DeskReservationDb;
 import pl.org.conceptweb.heydeskb.model.DeskReservation;
 import pl.org.conceptweb.heydeskb.repository.DeskDbRepository;
+import pl.org.conceptweb.heydeskb.repository.DeskReservationDbRepository;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
 
-@Service
+@Component
 @Log
 public class DeskReservationConverter {
 
@@ -19,6 +20,8 @@ public class DeskReservationConverter {
     DeskDbRepository deskDbRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    DeskReservationDbRepository deskReservationDbRepository;
 
     public DeskReservationDb deskReservationToDeskReservationDb(DeskReservation deskReservation) {
         return new DeskReservationDb(
@@ -60,6 +63,30 @@ public class DeskReservationConverter {
         } catch (Exception e) {
             log.log(Level.WARNING, "DeskReservationConverter: deskReservationsDbToDeskReservations: ERROR: " + e);
         }
-        return null;
+        return deskReservations;
+    }
+    
+     public List<Long> deskReservationsDbToIdList(List<DeskReservationDb> deskReservationsDb) {
+        List<Long> deskReservations = new ArrayList();
+        try {
+            deskReservationsDb.forEach(deskReservationDb -> {
+                deskReservations.add(deskReservationDb.getId());
+            });
+        } catch (Exception e) {
+            log.log(Level.WARNING, "DeskReservationConverter: deskReservationsDbToIdList: ERROR: " + e);
+        }
+        return deskReservations;
+    }
+     
+         public List<DeskReservationDb> idListToDeskReservationsDb(List<Long> IdList) {
+        List<DeskReservationDb> deskReservationsDb = new ArrayList();
+        try {
+            IdList.forEach(deskReservation -> {
+                deskReservationsDb.add(deskReservationDbRepository.getOne(deskReservation));
+            });
+        } catch (Exception e) {
+            log.log(Level.WARNING, "DeskReservationConverter: idListToDeskReservationsDb: ERROR: " + e);
+        }
+        return deskReservationsDb;
     }
 }
