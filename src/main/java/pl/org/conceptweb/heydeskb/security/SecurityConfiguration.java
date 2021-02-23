@@ -32,14 +32,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 
                 .authorizeRequests()
-                .antMatchers("/**").permitAll() //.hasAuthority("USER")
-                .antMatchers("/*").permitAll() //.hasAuthority("USER")
-                .antMatchers("/test").permitAll() //.hasAuthority("USER")
-                .antMatchers("/h2-console/*").permitAll()
-                
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
+                
+                .antMatchers("/**").permitAll() //.hasAuthority("USER")
+                .antMatchers("/*").permitAll() //.hasAuthority("USER")
+                
+                .antMatchers("/test").permitAll() //.hasAuthority("USER")
+                .antMatchers("/h2-console/*").permitAll()               
                 
                 .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
                 .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
