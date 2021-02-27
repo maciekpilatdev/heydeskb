@@ -32,26 +32,63 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                
+                .antMatchers("/floor").hasAnyAuthority("ADMIN")
+                .antMatchers("/building").hasAnyAuthority("ADMIN")
+                .antMatchers("/company").hasAnyAuthority("ADMIN")
+                .antMatchers("/desk").hasAnyAuthority("ADMIN,USER")
+                .antMatchers("/desk/reservation").hasAnyAuthority("ADMIN,USER")
+                .antMatchers("/desk/reservation/user").hasAnyAuthority("ADMIN,USER")
+                .antMatchers("/deskerservation").hasAnyAuthority("ADMIN,USER")
+                .antMatchers("/deskerservation/getallbycompany").hasAnyAuthority("ADMIN,USER")
+                .antMatchers("/deskerservation/delete").hasAnyAuthority("ADMIN,USER")
+                .antMatchers("/user").hasAuthority("USER")
+                .antMatchers("/admin").hasAuthority("ADMIN")
+                .antMatchers("/user").hasAuthority("ADMIN")
+                .antMatchers("/user/add").hasAuthority("ADMIN")
+                .antMatchers("/user/getbycompany").hasAuthority("ADMIN")
+                .antMatchers("/user/delete").hasAuthority("ADMIN")                
+                
+                .antMatchers("/dropdown").permitAll()
+                .antMatchers("/dropdown/building").permitAll()
+                .antMatchers("/dropdown/floor").permitAll()
+                .antMatchers("/dropdown/room").permitAll()
+                .antMatchers("/dropdown/desk").permitAll()
+                
+                .antMatchers("/h2-console/*").permitAll()
+                .antMatchers("/stats").permitAll()
+                .antMatchers("/stats/basic").permitAll()
+                .antMatchers("/test").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/").permitAll()
+
                 
-                .antMatchers("/**").permitAll() //.hasAuthority("USER")
-                .antMatchers("/*").permitAll() //.hasAuthority("USER")
                 
-                .antMatchers("/test").permitAll() //.hasAuthority("USER")
-                .antMatchers("/h2-console/*").permitAll()               
+////////////////////////////////////////////////////////////////////////////////////                
                 
-                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
-                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
-                                
-                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
-                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
-                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
-                .antMatchers("/company").permitAll()
-                .antMatchers("/dropdown/*").permitAll()
-                .antMatchers("/stats/*").permitAll()
-                .antMatchers("/user/*").permitAll()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/login").permitAll()
+//                .antMatchers("/signup").permitAll()
+//                
+//                .antMatchers("/**").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/*").permitAll() //.hasAuthority("USER")
+//                
+//                .antMatchers("/test").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/h2-console/*").permitAll()               
+//                
+//                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
+//                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
+//                                
+//                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
+//                .antMatchers("/company").permitAll()
+//                .antMatchers("/dropdown/*").permitAll()
+//                .antMatchers("/stats/*").permitAll()
+//                .antMatchers("/user/*").permitAll()
+                
+////////////////////////////////////////////////////////////////////////////////////////////////// 
                 
 //                .authorizeRequests()
 //                .antMatchers("/test").permitAll() //.hasAuthority("USER")

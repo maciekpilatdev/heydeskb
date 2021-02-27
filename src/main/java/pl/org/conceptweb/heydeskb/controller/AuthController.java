@@ -79,7 +79,6 @@ public class AuthController {
     }
 
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-
     @RequestMapping(value = "/login", method = RequestMethod.POST
 //            , produces = MediaType.APPLICATION_JSON_VALUE
     )

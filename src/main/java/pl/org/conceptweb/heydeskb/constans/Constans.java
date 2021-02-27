@@ -54,4 +54,10 @@ public static String ADD_USER_SUCCESS_MESSAGE = "";
 public static String GET_ALL_USERS_BY_COMPANY_SUCCESS_MESSAGE = "";
 public static String DELETE_USER_BY_ID_SUCCESS_MESSAGE = "user deleted";
 
+public static String IF_USERNAME_IS_PROPRER_ERROR_MESSAGE = "user name not unique";
+public static String IF_USERNAME_NOT_TO_SHORT_OR_LONG_ERROR_MESSAGE = "user name is to short or to long";
+public static String IF_USERNAME_IS_PROPER_SUCCESS_MESSAGE = "user name is correct";
+
+public static String ADD_FLOOR_SUCCESS_MESSAGE = "saved floor";
+public static String ADD_ROOM_SUCCESS_MESSAGE = "saved room";
 }

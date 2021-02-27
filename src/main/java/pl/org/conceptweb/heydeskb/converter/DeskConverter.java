@@ -1,8 +1,8 @@
 package pl.org.conceptweb.heydeskb.converter;
 
-import ch.qos.logback.classic.Level;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,6 @@ public class DeskConverter {
             deskReservationsList.add(deskReservationConverter.deskReservationDbToDeskReservation(deskReservation));
         }
         );
-
         return new Desk(
                 deskDb.getId(),
                 deskDb.getBuildingId(),
@@ -70,5 +69,53 @@ public class DeskConverter {
                 desk.getDeleted(),
                 deskReservationDbsList
         );
+    }
+
+        public List<DeskDb> desksToDesksDb(List<Desk> desks) {
+        List<DeskDb> desksDb = new ArrayList();
+        try {
+            desks.forEach(desk -> {
+                desksDb.add(deskToDeskDb(desk));
+            });
+        } catch (Exception e) {
+            log.log(java.util.logging.Level.WARNING, "DeskReservationConverter: deskReservationsToDeskReservationsDb: ERROR: " + e);
+        }
+        return desksDb;
+    }
+
+    public List<Desk> desksDbToDesks(List<DeskDb> desksDb) {
+        List<Desk> desks = new ArrayList();
+        try {
+            desksDb.forEach(deskDb -> {
+                desks.add(deskDbToDesk(deskDb));
+            });
+        } catch (Exception e) {
+            log.log(java.util.logging.Level.WARNING, "DeskReservationConverter: deskReservationsDbToDeskReservations: ERROR: " + e);
+        }
+        return desks;
+    }
+  
+    public List<Long> deskDbToIdList(List<DeskDb> desksDb) {
+        List<Long> desks = new ArrayList();
+        try {
+            desksDb.forEach(deskDb -> {
+                desks.add(deskDb.getId());
+            });
+        } catch (Exception e) {
+            log.log(Level.WARNING, "DeskConverter: deskDbToIdList: ERROR: " + e);
+        }
+        return desks;
+    }
+
+    public List<DeskDb> idListToDeskDb(List<Long> IdList) {
+        List<DeskDb> desksDb = new ArrayList();
+        try {
+            IdList.forEach(desk -> {
+                desksDb.add(deskDbRepository.getOne(desk));
+            });
+        } catch (Exception e) {
+            log.log(Level.WARNING, "DeskConverter: idListToDeskDb: ERROR: " + e);
+        }
+        return desksDb;
     }
 }

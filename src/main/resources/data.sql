@@ -1,11 +1,13 @@
 INSERT INTO COMPANY_DB VALUES (10, 'WARSZAWA', 'POLSKA', 'mail_1@mail.pl', 'JUREX SA', '22 45374455', '20-345', 'ul. Jankowska', 41);
 INSERT INTO COMPANY_DB VALUES (20, 'KRAKÓW', 'POLSKA', 'mail_2@mail.pl', 'DCD SA', '33 1234567', '30-365', 'ul. Zielona', 1);
 
-INSERT INTO USERS VALUES (10, 'true','USER,ROLE_USER',false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','user', 10);
-INSERT INTO USERS VALUES (20,'true','ADMIN,ROLE_ADMIN', false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','admin', 10);
+INSERT INTO USERS VALUES (10, 'true','USER',false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','user', 10);
+INSERT INTO USERS VALUES (20,'true','ADMIN', false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','admin', 10);
+-- INSERT INTO USERS VALUES (10, 'true','USER,ROLE_USER',false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','user', 10);
+-- INSERT INTO USERS VALUES (20,'true','ADMIN,ROLE_ADMIN', false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','admin', 10);
 
-INSERT INTO BUILDING_DB VALUES (1,'budynek 1', 10);
-INSERT INTO BUILDING_DB VALUES (2,'budynek 2', 20);
+INSERT INTO BUILDING_DB VALUES (10,'budynek 1', 10);
+INSERT INTO BUILDING_DB VALUES (20,'budynek 2', 20);
 
 INSERT INTO FLOOR_DB VALUES (1,'piętro 1', 1);
 INSERT INTO FLOOR_DB VALUES (2,'piętro 2', 1);

@@ -32,7 +32,6 @@ public class PortalStatsController {
         portalStats.add(new HttpKeyValue("numberOfUsers", String.valueOf(userRepository.findAll().size())));
         portalStats.add(new HttpKeyValue("totalNumberOfReservations", String.valueOf(deskReservationDbRepository.findAll().size())));
         portalStats.add(new HttpKeyValue("numberOfReservationsDaily", "not ready yet"));
-
         return new HttpResponseWrapper(Constans.OK, Constans.BASIC_PORTAL_STATS_SUCCESS_MESSAGE, portalStats);
     }
 }

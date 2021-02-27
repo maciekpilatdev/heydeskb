@@ -23,7 +23,7 @@ public class RoomDb {
     private FloorDb floor;
     @JsonIgnore
     @OneToMany(mappedBy = "roomDb")
-    public List<DeskDb> desk;
+    public List<DeskDb> desks;
 
     public RoomDb() {
     }
@@ -33,6 +33,13 @@ public class RoomDb {
  public RoomDb(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public RoomDb(Long id, String name, FloorDb floor, List<DeskDb> desks) {
+        this.id = id;
+        this.name = name;
+        this.floor = floor;
+        this.desks = desks;
     }
 
     public Long getId() {
@@ -57,6 +64,14 @@ public class RoomDb {
 
     public void setFloor(FloorDb floor) {
         this.floor = floor;
+    }
+
+    public List<DeskDb> getDesks() {
+        return desks;
+    }
+
+    public void setDesks(List<DeskDb> desks) {
+        this.desks = desks;
     }
 
 }
