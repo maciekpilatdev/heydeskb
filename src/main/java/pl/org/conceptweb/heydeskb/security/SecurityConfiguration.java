@@ -19,7 +19,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsService userDetailsService;
-    
+
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
@@ -30,9 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                
                 .authorizeRequests()
                 
+                .antMatchers("/floor/company").hasAnyAuthority("ADMIN")
+                .antMatchers("/room").hasAnyAuthority("ADMIN")
                 .antMatchers("/floor").hasAnyAuthority("ADMIN")
                 .antMatchers("/building").hasAnyAuthority("ADMIN")
                 .antMatchers("/company").hasAnyAuthority("ADMIN")
@@ -47,14 +48,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user").hasAuthority("ADMIN")
                 .antMatchers("/user/add").hasAuthority("ADMIN")
                 .antMatchers("/user/getbycompany").hasAuthority("ADMIN")
-                .antMatchers("/user/delete").hasAuthority("ADMIN")                
-                
+                .antMatchers("/user/delete").hasAuthority("ADMIN")
                 .antMatchers("/dropdown").permitAll()
                 .antMatchers("/dropdown/building").permitAll()
                 .antMatchers("/dropdown/floor").permitAll()
                 .antMatchers("/dropdown/room").permitAll()
                 .antMatchers("/dropdown/desk").permitAll()
-                
                 .antMatchers("/h2-console/*").permitAll()
                 .antMatchers("/stats").permitAll()
                 .antMatchers("/stats/basic").permitAll()
@@ -62,54 +61,51 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/").permitAll()
+                ////////////////////////////////////////////////////////////////////////////////////                
 
-                
-                
-////////////////////////////////////////////////////////////////////////////////////                
-                
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/login").permitAll()
-//                .antMatchers("/signup").permitAll()
-//                
-//                .antMatchers("/**").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/*").permitAll() //.hasAuthority("USER")
-//                
-//                .antMatchers("/test").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/h2-console/*").permitAll()               
-//                
-//                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
-//                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
-//                                
-//                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/company").permitAll()
-//                .antMatchers("/dropdown/*").permitAll()
-//                .antMatchers("/stats/*").permitAll()
-//                .antMatchers("/user/*").permitAll()
-                
-////////////////////////////////////////////////////////////////////////////////////////////////// 
-                
-//                .authorizeRequests()
-//                .antMatchers("/test").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
-//                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/h2-console/*").permitAll()
-//                .antMatchers("/login").permitAll()
-//                .antMatchers("/signup").permitAll()
-//                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
-//                .antMatchers("/company").permitAll()
-//                .antMatchers("/dropdown/*").permitAll()
-//                .antMatchers("/stats/*").permitAll()
-//                .antMatchers("/user/*").permitAll()
+                //                .antMatchers("/").permitAll()
+                //                .antMatchers("/login").permitAll()
+                //                .antMatchers("/signup").permitAll()
+                //                
+                //                .antMatchers("/**").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/*").permitAll() //.hasAuthority("USER")
+                //                
+                //                .antMatchers("/test").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/h2-console/*").permitAll()               
+                //                
+                //                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
+                //                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
+                //                                
+                //                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/company").permitAll()
+                //                .antMatchers("/dropdown/*").permitAll()
+                //                .antMatchers("/stats/*").permitAll()
+                //                .antMatchers("/user/*").permitAll()
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+                //                .authorizeRequests()
+                //                .antMatchers("/test").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/admin").permitAll() //.hasAuthority("ADMIN")
+                //                .antMatchers("/user").permitAll() //.hasAnyAuthority("ADMIN", "USER")
+                //                .antMatchers("/").permitAll()
+                //                .antMatchers("/h2-console/*").permitAll()
+                //                .antMatchers("/login").permitAll()
+                //                .antMatchers("/signup").permitAll()
+                //                .antMatchers("/desk/reservation/*").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/desk/*").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/desk").permitAll() //.hasAuthority("USER")
+                //                .antMatchers("/company").permitAll()
+                //                .antMatchers("/dropdown/*").permitAll()
+                //                .antMatchers("/stats/*").permitAll()
+                //                .antMatchers("/user/*").permitAll()
 
                 .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        
+
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();
     }

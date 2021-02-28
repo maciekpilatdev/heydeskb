@@ -60,4 +60,6 @@ public static String IF_USERNAME_IS_PROPER_SUCCESS_MESSAGE = "user name is corre
 
 public static String ADD_FLOOR_SUCCESS_MESSAGE = "saved floor";
 public static String ADD_ROOM_SUCCESS_MESSAGE = "saved room";
+
+public static String GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of floors by company";
 }
