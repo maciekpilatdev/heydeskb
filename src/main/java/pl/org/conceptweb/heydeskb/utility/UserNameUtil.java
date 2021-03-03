@@ -41,7 +41,7 @@ public class UserNameUtil {
 
     private boolean checkIfUnique(String userName) {
         boolean response = false;
-         if (userRepository.findByUserNameWithoutDeleted(userName).isEmpty()) {
+         if (userRepository.findByUserNameWithoutDeleted(userName) == null) {
             response = true;
         }
         return response;

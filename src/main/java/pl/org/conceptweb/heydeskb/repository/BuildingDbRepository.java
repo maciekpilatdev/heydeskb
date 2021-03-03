@@ -11,12 +11,10 @@ public interface BuildingDbRepository extends JpaRepository<BuildingDb, Long> {
 
     @Query(value = "select b from BuildingDb b "
             + "join b.companyDb c "
-            + "where c.id = ?1")
+            + "where c.id = ?1 and b.isDeleted = false")
     public List<BuildingDb> getAllByCompany(Long companyId);
+    
+    
 }
 
-//"select d from DeskDb d "
-//        + "join d.roomDb r "
-//        + "join r.floor f "
-//        + "join f.building b "
-//        + "where r.id = ?1 and f.id = ?2 and b.id=?3"
+

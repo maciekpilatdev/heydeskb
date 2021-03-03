@@ -62,4 +62,9 @@ public static String ADD_FLOOR_SUCCESS_MESSAGE = "saved floor";
 public static String ADD_ROOM_SUCCESS_MESSAGE = "saved room";
 
 public static String GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of floors by company";
+public static String DELETE_FLOOR_SUCCESS_MESSAGE = "floor deleted";
+public static String HAS_AUTHORITY_ERROR_MESSAGE = "insufficient authority";
+
+public static String GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of buildings by company";
+public static String DELETE_BUILDING_SUCCESS_MESSAGE = "building deleted";
 }

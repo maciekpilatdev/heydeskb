@@ -24,17 +24,19 @@ public class BuildingDb {
     @ManyToOne
     @JoinColumn()
     CompanyDb companyDb;
+    private Boolean isDeleted;
 
     public BuildingDb() {
     }
 
     ;
 
-    public BuildingDb(Long id, String name, List<FloorDb> floors, CompanyDb companyDb) {
+    public BuildingDb(Long id, String name, List<FloorDb> floors, CompanyDb companyDb, Boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.floors = floors;
         this.companyDb = companyDb;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -69,4 +71,12 @@ public class BuildingDb {
         this.companyDb = companyDb;
     }
 
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    
 }

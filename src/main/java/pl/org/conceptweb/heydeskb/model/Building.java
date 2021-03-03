@@ -12,4 +12,5 @@ public class Building {
     private String name;
     private List<FloorDb> floors;
     private CompanyDb companyDb;
+    private Boolean isDeleted;
 }

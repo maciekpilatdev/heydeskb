@@ -12,11 +12,11 @@ import pl.org.conceptweb.heydeskb.model.Building;
 public class BuildingConverter {
 
     public Building buildingDbToBuilding(BuildingDb buildingDb) {
-        return new Building(buildingDb.getId(), buildingDb.getName(), buildingDb.getFloors(), buildingDb.getCompanyDb());
+        return new Building(buildingDb.getId(), buildingDb.getName(), buildingDb.getFloors(), buildingDb.getCompanyDb(), buildingDb.getIsDeleted());
     }
 
     public BuildingDb buildingToBuildingDb(Building building) {
-        return new BuildingDb(building.getId(), building.getName(), building.getFloors(), building.getCompanyDb());
+        return new BuildingDb(building.getId(), building.getName(), building.getFloors(), building.getCompanyDb(), building.getIsDeleted());
     }
 
     public List<Building> buildingsDbToBuildings(List<BuildingDb> buildingsDb) {

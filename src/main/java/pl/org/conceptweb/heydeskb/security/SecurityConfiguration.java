@@ -32,10 +32,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 
+                .antMatchers("/building").hasAnyAuthority("ADMIN")
+                .antMatchers("/floor").hasAnyAuthority("ADMIN")
                 .antMatchers("/floor/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/room").hasAnyAuthority("ADMIN")
-                .antMatchers("/floor").hasAnyAuthority("ADMIN")
-                .antMatchers("/building").hasAnyAuthority("ADMIN")
+                .antMatchers("/room/company").hasAnyAuthority("ADMIN")
+                
                 .antMatchers("/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/desk").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/desk/reservation").hasAnyAuthority("ADMIN,USER")

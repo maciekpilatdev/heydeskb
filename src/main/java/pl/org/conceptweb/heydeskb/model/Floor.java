@@ -14,4 +14,5 @@ public class Floor {
     private String name;
     private Long building;
     private List<Long> rooms;
+    private boolean isDeleted;
 }

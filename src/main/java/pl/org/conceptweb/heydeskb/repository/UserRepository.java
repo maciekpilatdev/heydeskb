@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserName(String userName);
     
     @Query("select u from User u where u.userName = ?1 and u.isDeleted = false")
-    public List<User> findByUserNameWithoutDeleted(String userName);
+    public User findByUserNameWithoutDeleted(String userName);
     
     @Query("select u from User u "
             + "join u.companyDb c "

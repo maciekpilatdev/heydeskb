@@ -23,22 +23,22 @@ public class RoomConverter {
     FloorDbRepository floorDbRepository;
 
     public Room roomDbToRoom(RoomDb roomDb) {
-        return new Room(roomDb.getId(), roomDb.getName(), roomDb.getFloor().getId(), deskConverter.deskDbToIdList(roomDb.getDesks()));
+        return new Room(roomDb.getId(), roomDb.getName(), roomDb.getFloor().getId(), deskConverter.deskDbToIdList(roomDb.getDesks()), roomDb.getIsDeleted());
     }
 
     public RoomDb roomToRoomDb(Room room) {
-        return new RoomDb(room.getId(), room.getName(), floorDbRepository.getOne(room.getFloor()), deskConverter.idListToDeskDb(room.getDesks()));
+        return new RoomDb(room.getId(), room.getName(), floorDbRepository.getOne(room.getFloor()), deskConverter.idListToDeskDb(room.getDesks()), room.getIsDeleted());
     }
 
-    public List<Long> roomsDbToRooms(List<RoomDb> roomsDb) {
+    public List<Room> roomsDbToRooms(List<RoomDb> roomsDb) {
 
-        List<Long> rooms = new ArrayList();
+        List<Room> rooms = new ArrayList();
         try {
             roomsDb.forEach(roomDb -> {
-                rooms.add(roomDb.getId());
+                rooms.add(roomDbToRoom(roomDb));
             });
         } catch (Exception e) {
-            log.log(java.util.logging.Level.WARNING, "RoomConverter: roomsDbToRooms: ERROR: " + e);
+            log.log(java.util.logging.Level.WARNING, "ERROR: RoomConverter: roomsDbToRooms: " + e);
         }
         return rooms;
     }
@@ -51,7 +51,7 @@ public class RoomConverter {
                 roomsDb.add(roomToRoomDb(room));
             });
         } catch (Exception e) {
-            log.log(java.util.logging.Level.WARNING, "FloorConverter: floorsToFloorDb: ERROR: " + e);
+            log.log(java.util.logging.Level.WARNING, "ERROR: FloorConverter: floorsToFloorDb: " + e);
         }
         return roomsDb;
     }
@@ -63,7 +63,7 @@ public class RoomConverter {
                 rooms.add(roomDb.getId());
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "RoomConverter: roomsDbToIdList: ERROR: " + e);
+            log.log(Level.WARNING, "ERROR: RoomConverter: roomsDbToIdList: " + e);
         }
         return rooms;
     }
@@ -75,7 +75,7 @@ public class RoomConverter {
                 roomsDb.add(roomDbRepository.getOne(roomDb));
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "RoomConverter: idListToRoomsDb: ERROR: " + e);
+            log.log(Level.WARNING, "ERROR: RoomConverter: idListToRoomsDb: : " + e);
         }
         return roomsDb;
     }

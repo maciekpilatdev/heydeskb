@@ -24,24 +24,31 @@ public class RoomDb {
     @JsonIgnore
     @OneToMany(mappedBy = "roomDb")
     public List<DeskDb> desks;
+    public Boolean isDeleted;
 
     public RoomDb() {
-    }
-
-    ;
+    };
  
- public RoomDb(Long id, String name) {
+ public RoomDb(Long id, String name, Boolean isDeleted) {
         this.id = id;
         this.name = name;
+        this.isDeleted = isDeleted;
     }
 
-    public RoomDb(Long id, String name, FloorDb floor, List<DeskDb> desks) {
+    public RoomDb(Long id, String name, FloorDb floor, List<DeskDb> desks, Boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.floor = floor;
         this.desks = desks;
+        this.isDeleted = isDeleted;
     }
 
+    @Override
+    public String toString() {
+        return "RoomDb{" + "id=" + id + ", name=" + name + ", isDeleted=" + isDeleted + '}';
+    }
+    
+    
     public Long getId() {
         return id;
     }
@@ -72,6 +79,14 @@ public class RoomDb {
 
     public void setDesks(List<DeskDb> desks) {
         this.desks = desks;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 }

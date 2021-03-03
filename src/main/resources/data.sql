@@ -6,36 +6,36 @@ INSERT INTO USERS VALUES (20,'true','ADMIN', false, null, null,'$2y$12$7Iw7fWqw.
 -- INSERT INTO USERS VALUES (10, 'true','USER,ROLE_USER',false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','user', 10);
 -- INSERT INTO USERS VALUES (20,'true','ADMIN,ROLE_ADMIN', false, null, null,'$2y$12$7Iw7fWqw.QHcY6cSHgMKPuAKf1k8wYy9jfGu0NEu.D/mFsewzh2TS','admin', 10);
 
-INSERT INTO BUILDING_DB VALUES (10,'budynek 1', 10);
-INSERT INTO BUILDING_DB VALUES (20,'budynek 2', 20);
+INSERT INTO BUILDING_DB VALUES (10,false,'budynek 1', 10);
+INSERT INTO BUILDING_DB VALUES (20,false,'budynek 2', 20);
 
-INSERT INTO FLOOR_DB VALUES (1,'piętro 1', 1);
-INSERT INTO FLOOR_DB VALUES (2,'piętro 2', 1);
-INSERT INTO FLOOR_DB VALUES (3,'piętro 1', 2);
-INSERT INTO FLOOR_DB VALUES (4,'piętro 2', 2);
-INSERT INTO FLOOR_DB VALUES (5,'piętro 3', 2);
+INSERT INTO FLOOR_DB VALUES (10,false,'piętro 1', 10);
+INSERT INTO FLOOR_DB VALUES (20,false,'piętro 2', 10);
+INSERT INTO FLOOR_DB VALUES (30,false,'piętro 1', 20);
+INSERT INTO FLOOR_DB VALUES (40,false,'piętro 2', 20);
+INSERT INTO FLOOR_DB VALUES (50,false,'piętro 3', 20);
 
-INSERT INTO ROOM_DB VALUES (1,'pokój 1', 1);
-INSERT INTO ROOM_DB VALUES (2,'pokój 2', 1);
-INSERT INTO ROOM_DB VALUES (3,'pokój 1', 2);
-INSERT INTO ROOM_DB VALUES (4,'pokój 1', 3);
-INSERT INTO ROOM_DB VALUES (5,'pokój 1', 4);
-INSERT INTO ROOM_DB VALUES (6,'pokój 1', 5);
-INSERT INTO ROOM_DB VALUES (7,'pokój 2', 3);
-INSERT INTO ROOM_DB VALUES (8,'pokój 3', 3);
-INSERT INTO ROOM_DB VALUES (9,'pokój 4', 3);
+INSERT INTO ROOM_DB VALUES (10,false,'pokój 1', 10);
+INSERT INTO ROOM_DB VALUES (20,false,'pokój 2', 10);
+INSERT INTO ROOM_DB VALUES (30,false,'pokój 1', 20);
+INSERT INTO ROOM_DB VALUES (40,false,'pokój 1', 30);
+INSERT INTO ROOM_DB VALUES (50,false,'pokój 1', 40);
+INSERT INTO ROOM_DB VALUES (60,false,'pokój 1', 50);
+INSERT INTO ROOM_DB VALUES (70,false,'pokój 2', 30);
+INSERT INTO ROOM_DB VALUES (80,false,'pokój 3', 30);
+INSERT INTO ROOM_DB VALUES (90,false,'pokój 4', 30);
 
-INSERT INTO DESK_DB VALUES(1000, TRUE, 1, FALSE, 'Biurko w rogu pokoju.', null, 1, FALSE, 1);
-INSERT INTO DESK_DB VALUES(2000, TRUE, 1, FALSE, 'Biurko na środku.', null, 1, TRUE, 2);
-INSERT INTO DESK_DB VALUES(3000, TRUE, 1, FALSE, 'Biurko na środku pokoju.', null, 2, TRUE, 3);
-INSERT INTO DESK_DB VALUES(4000, TRUE, 1, FALSE, 'Biurko z lewej strony', null, 2, FALSE, 4);
-INSERT INTO DESK_DB VALUES(5000, TRUE, 1, FALSE, 'Biurko z prawej strony', null, 2, FALSE, 5);
-INSERT INTO DESK_DB VALUES(6000, TRUE, 1, FALSE, 'Biurko z lewej strony', null, 1, FALSE, 6);
-INSERT INTO DESK_DB VALUES(7000, TRUE, 2, FALSE, 'Biurko z prawej strony', null, 1, FALSE, 7);
-INSERT INTO DESK_DB VALUES(8000, TRUE, 2, FALSE, 'Biurko przy drzwiach', null, 2, FALSE, 8);
-INSERT INTO DESK_DB VALUES(9000, TRUE, 2, FALSE, 'Biurko przy drzwiach', null, 3, TRUE, 9);
-INSERT INTO DESK_DB VALUES(10000, TRUE, 2, FALSE, 'Biurko przy ścianie', null, 4, TRUE, 1);
-INSERT INTO DESK_DB VALUES(11000, TRUE, 2, FALSE, 'Biurko w kanciapie', null, 4, TRUE, 1);
+INSERT INTO DESK_DB VALUES(1000, TRUE, 10, FALSE, 'Biurko w rogu pokoju.', null, 10, FALSE, 10);
+INSERT INTO DESK_DB VALUES(2000, TRUE, 10, FALSE, 'Biurko na środku.', null, 10, TRUE, 20);
+INSERT INTO DESK_DB VALUES(3000, TRUE, 10, FALSE, 'Biurko na środku pokoju.', null, 20, TRUE, 30);
+INSERT INTO DESK_DB VALUES(4000, TRUE, 10, FALSE, 'Biurko z lewej strony', null, 20, FALSE, 40);
+INSERT INTO DESK_DB VALUES(5000, TRUE, 10, FALSE, 'Biurko z prawej strony', null, 20, FALSE, 50);
+INSERT INTO DESK_DB VALUES(6000, TRUE, 10, FALSE, 'Biurko z lewej strony', null, 10, FALSE, 60);
+INSERT INTO DESK_DB VALUES(7000, TRUE, 20, FALSE, 'Biurko z prawej strony', null, 10, FALSE, 70);
+INSERT INTO DESK_DB VALUES(8000, TRUE, 20, FALSE, 'Biurko przy drzwiach', null, 20, FALSE, 80);
+INSERT INTO DESK_DB VALUES(9000, TRUE, 20, FALSE, 'Biurko przy drzwiach', null, 30, TRUE, 90);
+INSERT INTO DESK_DB VALUES(10000, TRUE, 20, FALSE, 'Biurko przy ścianie', null, 40, TRUE, 10);
+INSERT INTO DESK_DB VALUES(11000, TRUE, 20, FALSE, 'Biurko w kanciapie', null, 40, TRUE, 10);
 
 -- INSERT INTO DESK_RESERVATION_DB  VALUES (50, 1609860420000, 1609860620000, 1, 10);
 -- INSERT INTO DESK_RESERVATION_DB  VALUES (51, 1609860720000, 1609861220000, 1, 20);

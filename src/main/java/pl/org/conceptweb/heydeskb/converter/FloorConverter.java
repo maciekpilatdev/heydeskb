@@ -25,11 +25,11 @@ public class FloorConverter {
     RoomConverter roomConverter;
 
    public Floor floorDbToFloor(FloorDb floorDb) {
-        return new Floor(floorDb.getId(), floorDb.getName(), floorDb.getBuilding().getId(), roomConverter.roomsDbToIdList(floorDb.getRooms()));
+        return new Floor(floorDb.getId(), floorDb.getName(), floorDb.getBuilding().getId(), roomConverter.roomsDbToIdList(floorDb.getRooms()), floorDb.isIsDeleted());
     }
 
     public FloorDb floorToFloorDb(Floor floor) {
-        return new FloorDb(floor.getId(), floor.getName(), buildingDbRepository.getOne(floor.getBuilding()), roomConverter.idListToRoomsDb(floor.getRooms()));
+        return new FloorDb(floor.getId(), floor.getName(), buildingDbRepository.getOne(floor.getBuilding()), roomConverter.idListToRoomsDb(floor.getRooms()), floor.isDeleted());
     }
 
     public List<Floor> floorsDbToFloors(List<FloorDb> floorsDb) {
