@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.org.conceptweb.heydeskb.constans.Constans;
@@ -67,4 +70,12 @@ public class UserService {
         }
         return httpResponseWrapper;
     }
+
+//    @Cacheable
+    public User getLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return userRepository.findByUserNameWithoutDeleted(currentPrincipalName);
+    }
+
 }

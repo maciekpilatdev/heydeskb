@@ -24,9 +24,9 @@ public class DeskDb {
     private RoomDb roomDb;    
     private Long desksInRoom;
     private Boolean nextToWindow;
-    private String description;
+    private String name;
     private Boolean active;
-    private Boolean deleted;
+    private Boolean isDeleted;
     @JsonIgnore
     @OneToMany(mappedBy = "deskId")
     private List<DeskReservationDb> deskReservations;
@@ -38,28 +38,28 @@ public class DeskDb {
 
     public DeskDb(){};
 
-    public DeskDb(Long id, Long buildingId, Long floorId, RoomDb roomDb, Long desksInRoom, Boolean nextToWindow, String description, Boolean active, Boolean deleted, List<DeskReservationDb> deskReservations) {
+    public DeskDb(Long id, Long buildingId, Long floorId, RoomDb roomDb, Long desksInRoom, Boolean nextToWindow, String name, Boolean active, Boolean isDeleted, List<DeskReservationDb> deskReservations) {
         this.id = id;
         this.buildingId = buildingId;
         this.floorId = floorId;
         this.roomDb = roomDb;
         this.desksInRoom = desksInRoom;
         this.nextToWindow = nextToWindow;
-        this.description = description;
+        this.name = name;
         this.active = active;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
         this.deskReservations = deskReservations;
     }
     
-    public DeskDb(Long buildingId, Long floorId, RoomDb roomDb, Long desksInRoom, Boolean nextToWindow, String description, Boolean active, Boolean deleted, List<DeskReservationDb> deskReservations) {
+    public DeskDb(Long buildingId, Long floorId, RoomDb roomDb, Long desksInRoom, Boolean nextToWindow, String name, Boolean active, Boolean isDeleted, List<DeskReservationDb> deskReservations) {
         this.buildingId = buildingId;
         this.floorId = floorId;
         this.roomDb = roomDb;
         this.desksInRoom = desksInRoom;
         this.nextToWindow = nextToWindow;
-        this.description = description;
+        this.name = name;
         this.active = active;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
         this.deskReservations = deskReservations;
     }
 
@@ -111,12 +111,12 @@ public class DeskDb {
         this.nextToWindow = nextToWindow;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Boolean getActive() {
@@ -127,12 +127,12 @@ public class DeskDb {
         this.active = active;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
+    public Boolean getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public List<DeskReservationDb> getDeskReservations() {

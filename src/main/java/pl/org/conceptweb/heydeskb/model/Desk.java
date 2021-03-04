@@ -14,8 +14,8 @@ public class Desk {
     private Long roomId;
     private Long desksInRoom;
     private Boolean nextToWindow;
-    private String description;
+    private String name;
     private Boolean active;
-    private Boolean deleted;
+    private Boolean isDeleted;
     private List<DeskReservation> deskReservations;
 }

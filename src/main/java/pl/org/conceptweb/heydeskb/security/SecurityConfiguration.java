@@ -31,17 +31,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                
                 .antMatchers("/building").hasAnyAuthority("ADMIN")
                 .antMatchers("/floor").hasAnyAuthority("ADMIN")
                 .antMatchers("/floor/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/room").hasAnyAuthority("ADMIN")
                 .antMatchers("/room/company").hasAnyAuthority("ADMIN")
                 
-                .antMatchers("/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/desk").hasAnyAuthority("ADMIN,USER")
+                .antMatchers("/desk/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/desk/reservation").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/desk/reservation/user").hasAnyAuthority("ADMIN,USER")
+                
+                .antMatchers("/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/deskerservation").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/deskerservation/getallbycompany").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/deskerservation/delete").hasAnyAuthority("ADMIN,USER")

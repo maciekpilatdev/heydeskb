@@ -39,9 +39,9 @@ public class DeskConverter {
                 deskDb.getRoomDb().getId(),
                 deskDb.getDesksInRoom(),
                 deskDb.getNextToWindow(),
-                deskDb.getDescription(),
+                deskDb.getName(),
                 deskDb.getActive(),
-                deskDb.getDeleted(),
+                deskDb.getIsDeleted(),
                 deskReservationsList
         );
     }
@@ -64,9 +64,9 @@ public class DeskConverter {
                 roomDbRepository.getOne(desk.getRoomId()),
                 desk.getDesksInRoom(),
                 desk.getNextToWindow(),
-                desk.getDescription(),
+                desk.getName(),
                 desk.getActive(),
-                desk.getDeleted(),
+                desk.getIsDeleted(),
                 deskReservationDbsList
         );
     }

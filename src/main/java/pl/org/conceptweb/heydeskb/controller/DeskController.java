@@ -26,6 +26,7 @@ import pl.org.conceptweb.heydeskb.utility.DeskUtil;
 import pl.org.conceptweb.heydeskb.model.DeskReservation;
 import pl.org.conceptweb.heydeskb.model.User;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
+import pl.org.conceptweb.heydeskb.service.DeskService;
 
 @RestController
 @Log
@@ -42,17 +43,23 @@ public class DeskController {
     DeskReservationConverter deskReservationConverter;
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    DeskService deskService;
+    
     @PostMapping()
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    public HttpResponseWrapper addDesk(@RequestBody Desk desk) {
-        HttpResponseWrapper httpResponseWrapper;
-        try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_DESK_SUCCESS_MESSAGE, Arrays.asList(deskDbRepository.save(deskConverter.deskToDeskDb(desk))));
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
-        }
-        return httpResponseWrapper;
+    public HttpResponseWrapper addDesk(@RequestBody Desk desk, Principal principal) {
+        return deskService.addDesk(desk, principal.getName());
+    }
+
+    @GetMapping("/company")
+    public HttpResponseWrapper getDeskListByCompany(Principal principal) {
+        return deskService.getDeskListByCompany(principal.getName());
+    }
+
+    @DeleteMapping()
+    public HttpResponseWrapper deleteDesk(@RequestParam Long deskId, Principal principal) {
+        return deskService.deleteDesk(deskId, principal.getName());
     }
 
     @DeleteMapping("/reservation")

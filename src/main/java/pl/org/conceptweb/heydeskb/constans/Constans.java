@@ -25,6 +25,7 @@ public static String ACCESS_ERROR_MESSAGE = "access denied";
 
 //BuildingController
 public static String ADD_BUILDING_SUCCESS_MESSAGE = "building added";
+public static String NAME_NOT_UNIQUE_ERROR_MESSAGE = "name not unique";
 
 //CompanyController
 public static String ADD_COMPANY_SUCCESS_MESSAGE = "company added";
@@ -67,4 +68,7 @@ public static String HAS_AUTHORITY_ERROR_MESSAGE = "insufficient authority";
 
 public static String GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of buildings by company";
 public static String DELETE_BUILDING_SUCCESS_MESSAGE = "building deleted";
+
+public static String GET_DESK_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of desk by company";
+public static String DELETE_DESK_SUCCESS_MESSAGE = "desk deleted";
 }

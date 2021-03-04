@@ -25,17 +25,20 @@ INSERT INTO ROOM_DB VALUES (70,false,'pokój 2', 30);
 INSERT INTO ROOM_DB VALUES (80,false,'pokój 3', 30);
 INSERT INTO ROOM_DB VALUES (90,false,'pokój 4', 30);
 
-INSERT INTO DESK_DB VALUES(1000, TRUE, 10, FALSE, 'Biurko w rogu pokoju.', null, 10, FALSE, 10);
-INSERT INTO DESK_DB VALUES(2000, TRUE, 10, FALSE, 'Biurko na środku.', null, 10, TRUE, 20);
-INSERT INTO DESK_DB VALUES(3000, TRUE, 10, FALSE, 'Biurko na środku pokoju.', null, 20, TRUE, 30);
-INSERT INTO DESK_DB VALUES(4000, TRUE, 10, FALSE, 'Biurko z lewej strony', null, 20, FALSE, 40);
-INSERT INTO DESK_DB VALUES(5000, TRUE, 10, FALSE, 'Biurko z prawej strony', null, 20, FALSE, 50);
-INSERT INTO DESK_DB VALUES(6000, TRUE, 10, FALSE, 'Biurko z lewej strony', null, 10, FALSE, 60);
-INSERT INTO DESK_DB VALUES(7000, TRUE, 20, FALSE, 'Biurko z prawej strony', null, 10, FALSE, 70);
-INSERT INTO DESK_DB VALUES(8000, TRUE, 20, FALSE, 'Biurko przy drzwiach', null, 20, FALSE, 80);
-INSERT INTO DESK_DB VALUES(9000, TRUE, 20, FALSE, 'Biurko przy drzwiach', null, 30, TRUE, 90);
-INSERT INTO DESK_DB VALUES(10000, TRUE, 20, FALSE, 'Biurko przy ścianie', null, 40, TRUE, 10);
-INSERT INTO DESK_DB VALUES(11000, TRUE, 20, FALSE, 'Biurko w kanciapie', null, 40, TRUE, 10);
+
+
+--                          id  active build  deskn floor deleted, name nettowin room
+INSERT INTO DESK_DB VALUES(1000, TRUE, 10,null,10,FALSE,'Biurko w rogu pokoju.',FALSE, 10);
+INSERT INTO DESK_DB VALUES(2000, TRUE, 10,null,10,FALSE,'Biurko na środku.',TRUE,20);
+INSERT INTO DESK_DB VALUES(3000, TRUE, 10,null,20,FALSE,'Biurko na środku pokoju.',TRUE,30);
+INSERT INTO DESK_DB VALUES(4000, TRUE, 10,null,20,FALSE,'Biurko z lewej strony',FALSE,40);
+INSERT INTO DESK_DB VALUES(5000, TRUE, 10,null,20,FALSE,'Biurko z prawej strony',FALSE,50);
+INSERT INTO DESK_DB VALUES(6000, TRUE, 10,null,20,FALSE,'Biurko z lewej strony',FALSE,60);
+INSERT INTO DESK_DB VALUES(7000, TRUE, 20,null,10,FALSE,'Biurko z prawej strony',FALSE,70);
+INSERT INTO DESK_DB VALUES(8000, TRUE, 20,null,20,FALSE,'Biurko przy drzwiach',FALSE,80);
+INSERT INTO DESK_DB VALUES(9000, TRUE, 20,null,30,FALSE,'Biurko przy drzwiach',TRUE,90);
+INSERT INTO DESK_DB VALUES(10000, TRUE, 20,null,40,FALSE,'Biurko przy ścianie',TRUE,10);
+INSERT INTO DESK_DB VALUES(11000, TRUE, 20,null,40,FALSE,'Biurko w kanciapie',TRUE,10);
 
 -- INSERT INTO DESK_RESERVATION_DB  VALUES (50, 1609860420000, 1609860620000, 1, 10);
 -- INSERT INTO DESK_RESERVATION_DB  VALUES (51, 1609860720000, 1609861220000, 1, 20);

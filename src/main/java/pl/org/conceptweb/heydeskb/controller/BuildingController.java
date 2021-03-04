@@ -1,7 +1,5 @@
 package pl.org.conceptweb.heydeskb.controller;
 
-import java.security.Principal;
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,17 +22,17 @@ public class BuildingController {
     BuildingService buildingService;
 
     @PostMapping
-    public HttpResponseWrapper addBuilding(@RequestBody Building building, Principal principal) {
-        return buildingService.addBuilding(building, principal.getName());
+    public HttpResponseWrapper addBuilding(@RequestBody Building building) {
+        return buildingService.addBuilding(building);
     }
 
     @GetMapping
-    public HttpResponseWrapper getBuildingListByCompany(Principal principal) {
-        return buildingService.getBuildingListByCompany(principal.getName());
+    public HttpResponseWrapper getBuildingListByCompany() {
+        return buildingService.getBuildingListByCompany();
     }
 
     @DeleteMapping()
-    public HttpResponseWrapper deleteBuilding(@RequestParam Long buildingId, Principal principal) {
-        return buildingService.deleteBuilding(buildingId, principal.getName());
+    public HttpResponseWrapper deleteBuilding(@RequestParam Long buildingId) {
+        return buildingService.deleteBuilding(buildingId);
     }
 }
