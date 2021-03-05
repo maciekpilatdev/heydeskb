@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.org.conceptweb.heydeskb.constans.Constans;
 import pl.org.conceptweb.heydeskb.converter.RoomConverter;
+import pl.org.conceptweb.heydeskb.model.FloorDb;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.model.Room;
 import pl.org.conceptweb.heydeskb.model.RoomDb;
+import pl.org.conceptweb.heydeskb.model.User;
+import pl.org.conceptweb.heydeskb.repository.FloorDbRepository;
 import pl.org.conceptweb.heydeskb.repository.RoomDbRepository;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
 import pl.org.conceptweb.heydeskb.security.SecurityAuthoritiesCheck;
@@ -25,14 +28,26 @@ public class RoomService {
     @Autowired
     RoomDbRepository roomDbRepository;
     @Autowired
+    FloorDbRepository floorDbRepository;
+    @Autowired
     UserRepository userRepository;
     @Autowired
     SecurityAuthoritiesCheck securityAuthoritiesCheck;
+    @Autowired
+    UserService userService;
 
-    public HttpResponseWrapper addRoom(Room room, String loggedUserName) {
+    public HttpResponseWrapper addRoom(Room room) {
         HttpResponseWrapper httpResponseWrapper;
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean isNameUnique = isNameUnique(room);
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_ROOM_SUCCESS_MESSAGE, Arrays.asList(roomConverter.roomDbToRoom(roomDbRepository.save(roomConverter.roomToRoomDb(room)))));
+            if (hasAuthority && isNameUnique) {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_ROOM_SUCCESS_MESSAGE, Arrays.asList(roomConverter.roomDbToRoom(roomDbRepository.save(roomConverter.roomToRoomDb(room)))));
+            } else if (hasAuthority) {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            } else {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+            }
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
@@ -64,5 +79,15 @@ public class RoomService {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
         return httpResponseWrapper;
+    }
+
+    public Boolean isNameUnique(Room room) {
+        FloorDb floorDb = floorDbRepository.getOne(room.getFloor());
+        return roomDbRepository.findAllByCompanyAndBuildingAndFloorAndName(
+                floorDb.getBuilding().getCompanyDb().getId(),
+                floorDb.getBuilding().getId(),
+                floorDb.getId(),
+                room.getName()
+        ).isEmpty();
     }
 }

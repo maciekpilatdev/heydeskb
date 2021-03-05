@@ -12,6 +12,7 @@ import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.repository.FloorDbRepository;
 import pl.org.conceptweb.heydeskb.model.Floor;
 import pl.org.conceptweb.heydeskb.model.FloorDb;
+import pl.org.conceptweb.heydeskb.model.User;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
 import pl.org.conceptweb.heydeskb.security.SecurityAuthoritiesCheck;
 
@@ -27,11 +28,23 @@ public class FloorService {
     UserRepository userRepository;
     @Autowired
     SecurityAuthoritiesCheck securityAuthoritiesCheck;
+    @Autowired
+    UserService userService;
+    @Autowired
+    FloorService floorService;
 
-    public HttpResponseWrapper addFloor(Floor floor, String loggedUserName) {
+    public HttpResponseWrapper addFloor(Floor floor) {
         HttpResponseWrapper httpResponseWrapper;
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean isNameUnique = isNameUnique(floor);
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_FLOOR_SUCCESS_MESSAGE, Arrays.asList(floorConverter.floorDbToFloor(floorDbRepository.save(floorConverter.floorToFloorDb(floor)))));
+            if (hasAuthority && isNameUnique) {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_FLOOR_SUCCESS_MESSAGE, Arrays.asList(floorConverter.floorDbToFloor(floorDbRepository.save(floorConverter.floorToFloorDb(floor)))));
+            } else if (hasAuthority) {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            } else {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+            }
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
@@ -63,5 +76,9 @@ public class FloorService {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
         return httpResponseWrapper;
+    }
+
+    public Boolean isNameUnique(Floor floor) {
+        return floorDbRepository.getAllByCompanyAndBuildingAndName(userService.getLoggedUser().getCompanyDb().getId(), floor.getBuilding(), floor.getName()).isEmpty();
     }
 }

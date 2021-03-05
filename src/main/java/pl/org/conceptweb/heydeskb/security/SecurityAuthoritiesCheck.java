@@ -18,7 +18,7 @@ public class SecurityAuthoritiesCheck {
         String userAuthoritys = userRepository.findByUserNameWithoutDeleted(userName).getAuthoritys();
         boolean hasAuthority = false;
         try {
-            hasAuthority = userAuthoritys.contains(authority);
+            hasAuthority = userAuthoritys.contains(authority);            
         } catch (Exception e) {
             log.log(Level.WARNING, "ERROR: SecurityAuthoritiesCheck: hasAuthority: " + e);
         }

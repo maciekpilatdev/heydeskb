@@ -24,7 +24,7 @@ public static String DELETE_USER_BY_HIMSELF_ERROR_MESSAGE = "you are not logged"
 public static String ACCESS_ERROR_MESSAGE = "access denied";
 
 //BuildingController
-public static String ADD_BUILDING_SUCCESS_MESSAGE = "building added";
+public static String ADD_BUILDING_SUCCESS_MESSAGE = "added a building";
 public static String NAME_NOT_UNIQUE_ERROR_MESSAGE = "name not unique";
 
 //CompanyController
@@ -59,16 +59,19 @@ public static String IF_USERNAME_IS_PROPRER_ERROR_MESSAGE = "user name not uniqu
 public static String IF_USERNAME_NOT_TO_SHORT_OR_LONG_ERROR_MESSAGE = "user name is to short or to long";
 public static String IF_USERNAME_IS_PROPER_SUCCESS_MESSAGE = "user name is correct";
 
-public static String ADD_FLOOR_SUCCESS_MESSAGE = "saved floor";
-public static String ADD_ROOM_SUCCESS_MESSAGE = "saved room";
+public static String ADD_FLOOR_SUCCESS_MESSAGE = "added a floor";
+public static String ADD_ROOM_SUCCESS_MESSAGE = "added a room";
 
 public static String GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of floors by company";
 public static String DELETE_FLOOR_SUCCESS_MESSAGE = "floor deleted";
-public static String HAS_AUTHORITY_ERROR_MESSAGE = "insufficient authority";
+
 
 public static String GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of buildings by company";
 public static String DELETE_BUILDING_SUCCESS_MESSAGE = "building deleted";
 
 public static String GET_DESK_LIST_BY_COMPANY_SUCCESS_MESSAGE = "list of desk by company";
 public static String DELETE_DESK_SUCCESS_MESSAGE = "desk deleted";
-}
+
+public static String HAS_AUTHORITY_ERROR_MESSAGE = "insufficient authority";
+public static String AUTHORITY_ADMIN = "ADMIN";
+        }

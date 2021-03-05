@@ -14,7 +14,13 @@ public interface FloorDbRepository extends JpaRepository<FloorDb, Long>{
     @Query("select f from FloorDb f "
             + "join f.building b "
             + "join b.companyDb c "
-            + "where c.id = ?1 and f.isDeleted = false")
+            + "where c.id = ?1 and f.isDeleted = false order by f.name")
     public List<FloorDb> findByCompanyId(Long companyId);
+
+    @Query("select f from FloorDb f "
+            + "join f.building b "
+            + "join b.companyDb c "
+            + "where c.id = ?1 and b.id =?2 and f.name =?3 and f.isDeleted = false order by f.name")    
+    public List<FloorDb> getAllByCompanyAndBuildingAndName(Long companyId, Long buildingId, String name);
         
 }

@@ -23,8 +23,8 @@ public class RoomController {
     RoomService roomService;
 
     @PostMapping()
-    public HttpResponseWrapper addRoom(@RequestBody Room room, Principal principal) {
-        return roomService.addRoom(room, principal.getName());
+    public HttpResponseWrapper addRoom(@RequestBody Room room) {
+        return roomService.addRoom(room);
     }
 
     @GetMapping("/company")

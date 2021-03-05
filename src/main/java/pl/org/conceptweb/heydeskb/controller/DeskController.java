@@ -48,8 +48,8 @@ public class DeskController {
     
     @PostMapping()
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    public HttpResponseWrapper addDesk(@RequestBody Desk desk, Principal principal) {
-        return deskService.addDesk(desk, principal.getName());
+    public HttpResponseWrapper addDesk(@RequestBody Desk desk) {
+        return deskService.addDesk(desk);
     }
 
     @GetMapping("/company")
@@ -85,7 +85,7 @@ public class DeskController {
         List<DeskDb> availableList = new ArrayList<>();
         HttpResponseWrapper httpResponseWrapper;
         try {
-            for (DeskDb deskDb : deskDbRepository.getDesksByBuildingAndFloorAndRoom(roomId, floorId, buildingId)) {
+            for (DeskDb deskDb : deskDbRepository.findDesksByBuildingAndFloorAndRoom(roomId, floorId, buildingId)) {
                 if (DeskUtil.checkIfDeskAvailable(startReservation, endReservation, deskDb)) {
                     availableList.add(deskDb);
                 };

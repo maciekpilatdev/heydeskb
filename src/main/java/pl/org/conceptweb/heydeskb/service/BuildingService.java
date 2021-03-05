@@ -30,23 +30,28 @@ public class BuildingService {
     SecurityAuthoritiesCheck securityAuthoritiesCheck;
     @Autowired
     UserService userService;
-    
-        public HttpResponseWrapper addBuilding(Building building) {
+
+    public HttpResponseWrapper addBuilding(Building building) {
         HttpResponseWrapper httpResponseWrapper;
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean isNameUnique = isNameUnique(building.getName());
+        
         try {
-            if (isNameUnique(building.getName())) {
+            if (hasAuthority && isNameUnique) {
                 BuildingDb buildingDb = buildingConverter.buildingToBuildingDb(building);
                 buildingDb.setCompanyDb(userService.getLoggedUser().getCompanyDb());
                 httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Arrays.asList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(buildingDb))));
+            } else if (hasAuthority) {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            } else {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             }
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
-
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
         return httpResponseWrapper;
     }
-    
+
     public HttpResponseWrapper getBuildingListByCompany() {
         HttpResponseWrapper httpResponseWrapper;
         try {

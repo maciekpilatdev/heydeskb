@@ -29,6 +29,13 @@ public class UserService {
     UserNameUtil userNameUtil;
     @Autowired
     PasswordEncoder passwordEncoder;
+    
+    //    @Cacheable
+    public User getLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return userRepository.findByUserNameWithoutDeleted(currentPrincipalName);
+    }
 
     public User deleteUserById(Long userId) throws Exception {
         User user = userRepository.findById(userId).get();
@@ -69,13 +76,6 @@ public class UserService {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
         return httpResponseWrapper;
-    }
-
-//    @Cacheable
-    public User getLoggedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        return userRepository.findByUserNameWithoutDeleted(currentPrincipalName);
     }
 
 }

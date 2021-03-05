@@ -24,8 +24,8 @@ public class FloorController {
     FloorService floorService;
 
     @PostMapping()
-    public HttpResponseWrapper addFloor(@RequestBody Floor floor, Principal principal) {
-        return floorService.addFloor(floor, principal.getName());
+    public HttpResponseWrapper addFloor(@RequestBody Floor floor) {
+        return floorService.addFloor(floor);
     }
 
     @GetMapping("/company")

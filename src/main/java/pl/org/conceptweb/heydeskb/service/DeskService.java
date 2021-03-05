@@ -13,6 +13,8 @@ import pl.org.conceptweb.heydeskb.repository.DeskDbRepository;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
 import pl.org.conceptweb.heydeskb.security.SecurityAuthoritiesCheck;
 import pl.org.conceptweb.heydeskb.model.Desk;
+import pl.org.conceptweb.heydeskb.model.RoomDb;
+import pl.org.conceptweb.heydeskb.repository.RoomDbRepository;
 
 @Log
 @Service
@@ -23,21 +25,33 @@ public class DeskService {
     @Autowired
     DeskDbRepository deskDbRepository;
     @Autowired
+    RoomDbRepository roomDbRepository;
+    @Autowired
     UserRepository userRepository;
     @Autowired
     SecurityAuthoritiesCheck securityAuthoritiesCheck;
-    
-    public HttpResponseWrapper addDesk(Desk desk, String loggedUserName) {
+    @Autowired
+    UserService userService;
+
+    public HttpResponseWrapper addDesk(Desk desk) {
         HttpResponseWrapper httpResponseWrapper;
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean isNameUnique = isNameUnique(desk);
         desk.setIsDeleted(Boolean.FALSE);
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_DESK_SUCCESS_MESSAGE, Arrays.asList(deskConverter.deskDbToDesk(deskDbRepository.save(deskConverter.deskToDeskDb(desk)))));
+            if (hasAuthority && isNameUnique) {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_DESK_SUCCESS_MESSAGE, Arrays.asList(deskConverter.deskDbToDesk(deskDbRepository.save(deskConverter.deskToDeskDb(desk)))));
+            } else if (hasAuthority) {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            } else {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+            }
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
         return httpResponseWrapper;
     }
-    
+
     public HttpResponseWrapper getDeskListByCompany(String loggedUserName) {
         HttpResponseWrapper httpResponseWrapper;
         try {
@@ -47,14 +61,13 @@ public class DeskService {
         }
         return httpResponseWrapper;
     }
-    
+
     public HttpResponseWrapper deleteDesk(Long deskId, String loggedUserName) {
         HttpResponseWrapper httpResponseWrapper;
         DeskDb deskDb = deskDbRepository.getOne(deskId);
         try {
             if (securityAuthoritiesCheck.hasAuthority(loggedUserName, "ADMIN")) {
                 deskDb.setIsDeleted(true);
-//                deskDbRepository.save(deskDb);
                 httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_DESK_SUCCESS_MESSAGE, Arrays.asList(deskDbRepository.save(deskDb)));
             } else {
                 httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
@@ -63,5 +76,16 @@ public class DeskService {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
         return httpResponseWrapper;
-    }    
+    }
+
+    public Boolean isNameUnique(Desk desk) {
+        RoomDb roomDb = roomDbRepository.getOne(desk.getRoomId());
+        return deskDbRepository.findAllByCompanyAndBuildingAndFloorAndRoomAndName(
+                roomDb.getFloor().getBuilding().getCompanyDb().getId(),
+                roomDb.getFloor().getBuilding().getId(),
+                roomDb.getFloor().getId(),
+                roomDb.getId(),
+                desk.getName()
+        ).isEmpty();
+    }
 }

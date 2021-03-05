@@ -83,7 +83,7 @@ public class DropdownController {
         HttpResponseWrapper hrw;
         try {
             if (floorId != 0 && roomId != 0) {
-                hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_DESKS_BY_ROOM_SUCCESS_MESSAGE, deskDbRepository.getDesksByBuildingAndFloorAndRoom(roomId, floorId, buildingId));
+                hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_DESKS_BY_ROOM_SUCCESS_MESSAGE, deskDbRepository.findDesksByBuildingAndFloorAndRoom(roomId, floorId, buildingId));
             } else {
                 hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_DESKS_BY_ROOM_SUCCESS_MESSAGE, deskDbRepository.findAll());
             }
