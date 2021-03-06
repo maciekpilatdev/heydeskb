@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.org.conceptweb.heydeskb.constans.Constans;
+import pl.org.conceptweb.heydeskb.converter.UserConverter;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.model.User;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
@@ -17,8 +17,8 @@ import pl.org.conceptweb.heydeskb.utility.PasswordUtil;
 import pl.org.conceptweb.heydeskb.utility.UserNameUtil;
 import pl.org.conceptweb.heydeskb.model.MethodResponse;
 
-@Service
 @Log
+@Service
 public class UserService {
 
     @Autowired
@@ -29,29 +29,39 @@ public class UserService {
     UserNameUtil userNameUtil;
     @Autowired
     PasswordEncoder passwordEncoder;
-    
+    @Autowired
+    UserConverter userConverter;
+
     //    @Cacheable
-    public User getLoggedUser() {
+    public User getLogged() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         return userRepository.findByUserNameWithoutDeleted(currentPrincipalName);
     }
 
-    public User deleteUserById(Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
-        user.setIsDeleted(Boolean.TRUE);
-        user.setActive(Boolean.FALSE);
-        userRepository.save(user);
-        return user;
+    public HttpResponseWrapper deleteById(Long userId) {
+        HttpResponseWrapper httpResponseWrapper;
+
+        try {
+            User user = userRepository.findById(userId).get();
+            user.setIsDeleted(Boolean.TRUE);
+            user.setActive(Boolean.FALSE);
+            userRepository.save(user);
+
+            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_USER_BY_ID_SUCCESS_MESSAGE, Arrays.asList(userConverter.userToUserTrans(userRepository.save(user))));
+        } catch (Exception e) {
+            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        }
+        return httpResponseWrapper;
     }
 
-    public HttpResponseWrapper addUser(String userName, String password, String repeatedPassword, String loggedUserName) {
+    public HttpResponseWrapper add(String userName, String password, String repeatedPassword, String loggedUserName) {
         HttpResponseWrapper httpResponseWrapper;
         try {
-            MethodResponse passwordMethordResponse = passwordUtil.ifPasswordIsProper(password, repeatedPassword, 6, 50);
+            MethodResponse passwordMethodResponse = passwordUtil.ifPasswordIsProper(password, repeatedPassword, 6, 50);
             MethodResponse userNameMethordResponse = userNameUtil.ifUserNameIsProper(userName, 6, 50);
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, passwordMethordResponse.getMessage() + " / " + userNameMethordResponse.getMessage(), new ArrayList());
-            if (passwordMethordResponse.getStatus() == Constans.OK && userNameMethordResponse.getStatus() == Constans.OK) {
+            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, passwordMethodResponse.getMessage() + " / " + userNameMethordResponse.getMessage(), new ArrayList());
+            if (passwordMethodResponse.getStatus().equals(Constans.OK) && userNameMethordResponse.getStatus().equals(Constans.OK)) {
                 httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_USER_SUCCESS_MESSAGE, Arrays.asList(userRepository.save(new User(
                         userName,
                         passwordEncoder.encode(password),
@@ -68,7 +78,7 @@ public class UserService {
         return httpResponseWrapper;
     }
 
-    public HttpResponseWrapper getAllUsersByCompany(Long companyId) {
+    public HttpResponseWrapper getAllByCompany(Long companyId) {
         HttpResponseWrapper httpResponseWrapper;
         try {
             httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_ALL_BY_COMPANY_SUCCESS_MESSAGE, userRepository.findAllUsersByCompany(companyId));
@@ -77,5 +87,4 @@ public class UserService {
         }
         return httpResponseWrapper;
     }
-
 }

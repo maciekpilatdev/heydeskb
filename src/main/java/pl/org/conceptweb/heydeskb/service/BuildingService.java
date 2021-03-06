@@ -33,13 +33,13 @@ public class BuildingService {
 
     public HttpResponseWrapper addBuilding(Building building) {
         HttpResponseWrapper httpResponseWrapper;
-        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN);
         Boolean isNameUnique = isNameUnique(building.getName());
         
         try {
             if (hasAuthority && isNameUnique) {
                 BuildingDb buildingDb = buildingConverter.buildingToBuildingDb(building);
-                buildingDb.setCompanyDb(userService.getLoggedUser().getCompanyDb());
+                buildingDb.setCompanyDb(userService.getLogged().getCompanyDb());
                 httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Arrays.asList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(buildingDb))));
             } else if (hasAuthority) {
                 httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
@@ -55,7 +55,7 @@ public class BuildingService {
     public HttpResponseWrapper getBuildingListByCompany() {
         HttpResponseWrapper httpResponseWrapper;
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE, buildingConverter.buildingsDbToBuildings(buildingDbRepository.getAllByCompany(userService.getLoggedUser().getCompanyDb().getId())));
+            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE, buildingConverter.buildingsDbToBuildings(buildingDbRepository.getAllByCompany(userService.getLogged().getCompanyDb().getId())));
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
@@ -66,7 +66,7 @@ public class BuildingService {
         HttpResponseWrapper httpResponseWrapper;
         BuildingDb buildingDb = buildingDbRepository.getOne(buildingId);
         try {
-            if (securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), "ADMIN")) {
+            if (securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), "ADMIN")) {
                 buildingDb.setIsDeleted(true);
                 buildingDbRepository.save(buildingDb);
                 httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_BUILDING_SUCCESS_MESSAGE, new ArrayList());
@@ -80,7 +80,7 @@ public class BuildingService {
     }
 
     public Boolean isNameUnique(String buildingName) {
-        return buildingDbRepository.getAllByCompanyAndName(userService.getLoggedUser().getCompanyDb().getId(), buildingName).isEmpty();
+        return buildingDbRepository.getAllByCompanyAndName(userService.getLogged().getCompanyDb().getId(), buildingName).isEmpty();
     }
 
 }

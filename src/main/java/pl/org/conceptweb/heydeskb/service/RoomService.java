@@ -38,7 +38,7 @@ public class RoomService {
 
     public HttpResponseWrapper addRoom(Room room) {
         HttpResponseWrapper httpResponseWrapper;
-        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN);
         Boolean isNameUnique = isNameUnique(room);
         try {
             if (hasAuthority && isNameUnique) {

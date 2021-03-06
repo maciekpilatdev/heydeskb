@@ -35,7 +35,7 @@ public class DeskService {
 
     public HttpResponseWrapper addDesk(Desk desk) {
         HttpResponseWrapper httpResponseWrapper;
-        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN);
         Boolean isNameUnique = isNameUnique(desk);
         desk.setIsDeleted(Boolean.FALSE);
         try {

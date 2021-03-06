@@ -14,7 +14,7 @@ public class PasswordUtil {
         MethodResponse methodResponse = new MethodResponse();
         StringBuilder sb = new StringBuilder();
         sb.setLength(0);
-        log.log(Level.WARNING, "! sb: " + sb.capacity() + " / " + sb.toString());
+        
         if (!ifPasswordIdentical(password, repeatedPassword)) {
             sb.setLength(0);
             methodResponse.setStatus(Constans.ERROR);
@@ -37,7 +37,6 @@ public class PasswordUtil {
         if (password.equals(repeatedPassword)) {
             response = true;
         }
-        log.log(Level.INFO, "PasswordUtil: ifPasswordIdentical: " + response);
         return response;
     }
 
@@ -46,7 +45,6 @@ public class PasswordUtil {
         if (password.length() >= minLength && password.length() <= maxLength) {
             response = true;
         }
-        log.log(Level.INFO, "PasswordUtil: ifPasswordNotToShortOrLong: " + response);
         return response;
     }
 }

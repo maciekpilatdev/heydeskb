@@ -35,7 +35,7 @@ public class FloorService {
 
     public HttpResponseWrapper addFloor(Floor floor) {
         HttpResponseWrapper httpResponseWrapper;
-        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLoggedUser().getUserName(), Constans.AUTHORITY_ADMIN);
+        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN);
         Boolean isNameUnique = isNameUnique(floor);
         try {
             if (hasAuthority && isNameUnique) {
@@ -79,6 +79,6 @@ public class FloorService {
     }
 
     public Boolean isNameUnique(Floor floor) {
-        return floorDbRepository.getAllByCompanyAndBuildingAndName(userService.getLoggedUser().getCompanyDb().getId(), floor.getBuilding(), floor.getName()).isEmpty();
+        return floorDbRepository.getAllByCompanyAndBuildingAndName(userService.getLogged().getCompanyDb().getId(), floor.getBuilding(), floor.getName()).isEmpty();
     }
 }

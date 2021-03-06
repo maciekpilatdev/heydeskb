@@ -2,7 +2,6 @@ package pl.org.conceptweb.heydeskb.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,9 +53,7 @@ public class AuthController {
     private Long jwtValidTime;
 
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE
-//            , produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     public HttpResponseWrapper signUp(@RequestBody User loginData) {
 
         HttpResponseWrapper wrapper;
@@ -74,14 +71,11 @@ public class AuthController {
         } else {
             wrapper = new HttpResponseWrapper(Constans.ERROR, Constans.SIGN_UP_ERROR_MESSAGE, new ArrayList());
         }
-        log.log(Level.WARNING, "SIGN UP USER: " + wrapper.toString());
         return wrapper;
     }
 
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    @RequestMapping(value = "/login", method = RequestMethod.POST
-//            , produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public HttpResponseWrapper createAuthebticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         User user = new User();
         HttpResponseWrapper httpResponseWrapper;
@@ -109,22 +103,6 @@ public class AuthController {
         }
         return httpResponseWrapper;
     }
-
-//    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, allowedHeaders = "*", methods = {RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.GET}, maxAge = 3600)
-//    @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
-//    public HttpResponseWrapper deleteUser(@RequestHeader("Authorization") String jwt, Principal principal) {
-//        HttpResponseWrapper httpResponseWrapper;
-//        User user = userRepository.findByUserName(principal.getName()).get();
-//
-//        if (user.getUserName() == principal.getName()) {
-//            user.setIsDeleted(Boolean.TRUE);
-//            userRepository.save(user);
-//            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_USER_BY_HIMSELF_SUCCESS_MESSAGE, Arrays.asList(userRepository.save(user)));
-//        } else {
-//            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.DELETE_USER_BY_HIMSELF_ERROR_MESSAGE, Arrays.asList(new User()));
-//        }
-//        return httpResponseWrapper;
-//    }
 
     @GetMapping("/access_error")
     public String accessError() {

@@ -1,49 +1,56 @@
 package pl.org.conceptweb.heydeskb.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.org.conceptweb.heydeskb.constans.Constans;
-import pl.org.conceptweb.heydeskb.converter.DeskReservationConverter;
-import pl.org.conceptweb.heydeskb.repository.DeskReservationDbRepository;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.service.DeskReservationService;
+import pl.org.conceptweb.heydeskb.model.DeskReservation;
 
 @RestController
 @RequestMapping("/deskerservation")
 public class DeskReservationController {
 
     @Autowired
-    DeskReservationDbRepository deskReservationDbRepository;
-    @Autowired
-    DeskReservationConverter deskReservationConverter;
-    @Autowired
     DeskReservationService deskReservationService;
+
+    @GetMapping("/user")
+    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
+    public HttpResponseWrapper getAllReservationsByUser() {
+        return deskReservationService.getAllByUser();
+    }
+
+    @PostMapping()
+    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
+    public HttpResponseWrapper makeReservation(@RequestBody DeskReservation deskReservation) {
+        return deskReservationService.makeReservation(deskReservation);
+    }
+
+    @GetMapping("/availabledesks")
+    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
+    public HttpResponseWrapper getAvailableDesksInPeriod(
+            @RequestParam Long startReservation,
+            @RequestParam Long endReservation,
+            @RequestParam Long buildingId,
+            @RequestParam Long floorId,
+            @RequestParam Long roomId) {
+        return deskReservationService.getAvailableDesksInPeriod(startReservation, endReservation, buildingId, floorId, roomId);
+    }
+
+    @DeleteMapping()
+    public HttpResponseWrapper deleteById(@RequestParam Long deskReservationId) {
+        return deskReservationService.deleteById(deskReservationId);
+    }
 
     @GetMapping("/getallbycompany")
     public HttpResponseWrapper getAllByCompany(@RequestParam Long companyId) {
-        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("", "", new ArrayList());
-        try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_ALL_BY_COMPANY_SUCCESS_MESSAGE, deskReservationConverter.deskReservationsDbToDeskReservations(deskReservationDbRepository.getAllByCompany(companyId)));
-        } catch (Exception e) {
-            new HttpResponseWrapper(Constans.ERROR, Constans.MAKE_RESERVATION_SUCCESS_MESSAGE, new ArrayList());
-        }
-        return httpResponseWrapper;
+        return deskReservationService.getAllByCompany(companyId);
     }
 
-    @DeleteMapping("/delete")
-    public HttpResponseWrapper deleteDeskReservationById(@RequestParam Long deskReservationId) {
-        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("", "", new ArrayList());
-        try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_DESK_RESERVATION_BY_ID_SUCCESS_MESSAGE, Arrays.asList(deskReservationConverter.deskReservationDbToDeskReservation(deskReservationService.deleteDeskReservationById(deskReservationId))));
-        } catch (Exception e) {
-            new HttpResponseWrapper(Constans.ERROR, Constans.MAKE_RESERVATION_SUCCESS_MESSAGE, new ArrayList());
-        }
-        return httpResponseWrapper;
-    }
 }

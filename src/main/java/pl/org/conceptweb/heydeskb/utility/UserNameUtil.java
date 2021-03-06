@@ -1,6 +1,5 @@
 package pl.org.conceptweb.heydeskb.utility;
 
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,7 +51,6 @@ public class UserNameUtil {
         if (userName.length() >= minLength && userName.length() <= maxLength) {
             response = true;
         }
-        log.log(Level.INFO, "UserNameUtil: ifNotToShortOrToLong: " + response);
         return response;
     }
 }
