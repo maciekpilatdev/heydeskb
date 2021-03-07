@@ -29,13 +29,13 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/add")
-    public HttpResponseWrapper addUser(@RequestBody String userData, Principal principal) {
+    public HttpResponseWrapper addUser(@RequestBody String userData) {
         JsonObject jsonObject = new JsonParser().parse(userData).getAsJsonObject();
         return userService.add(
                 jsonObject.get("userName").getAsString(),
                 jsonObject.get("password").getAsString(),
-                jsonObject.get("repeatedPassword").getAsString(),
-                principal.getName());
+                jsonObject.get("repeatedPassword").getAsString()
+                );
     }
 
     @GetMapping("/getbycompany")

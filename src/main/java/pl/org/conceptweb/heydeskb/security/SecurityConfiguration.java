@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/deskerservation").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/deskerservation/user").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/deskerservation/getallbycompany").hasAnyAuthority("ADMIN,USER")
-                .antMatchers("/company").hasAnyAuthority("ADMIN")
+                .antMatchers("/company").permitAll()
 //                .antMatchers("/deskerservation/delete").hasAnyAuthority("ADMIN,USER")
 //                .antMatchers("/user").hasAuthority("USER")
                 .antMatchers("/admin").hasAuthority("ADMIN")

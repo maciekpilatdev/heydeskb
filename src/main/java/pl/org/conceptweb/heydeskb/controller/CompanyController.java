@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
-import pl.org.conceptweb.heydeskb.model.Company;
 import pl.org.conceptweb.heydeskb.service.CompanyService;
+import pl.org.conceptweb.heydeskb.model.CompanyAndUser;
 
 @Log
 @RestController
@@ -19,7 +19,7 @@ public class CompanyController {
     CompanyService companyService;
     
     @PostMapping()
-    public HttpResponseWrapper add(@RequestBody Company company) {
-        return companyService.add(company);
+    public HttpResponseWrapper add(@RequestBody CompanyAndUser companyAndUser) {
+        return companyService.add(companyAndUser);
     }
 }

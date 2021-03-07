@@ -12,7 +12,7 @@ import pl.org.conceptweb.heydeskb.model.DeskReservationDb;
 import pl.org.conceptweb.heydeskb.repository.DeskReservationDbRepository;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.repository.DeskDbRepository;
-import pl.org.conceptweb.heydeskb.utility.DeskUtil;
+import pl.org.conceptweb.heydeskb.utility.DeskReservationUtil;
 import pl.org.conceptweb.heydeskb.model.DeskReservation;
 import pl.org.conceptweb.heydeskb.model.User;
 
@@ -27,7 +27,7 @@ public class DeskReservationService {
     DeskDbRepository deskDbRepository;
     @Autowired
     UserService userService;
-    
+
     public HttpResponseWrapper getAllByUser() {
         HttpResponseWrapper httpResponseWrapper;
         try {
@@ -57,12 +57,18 @@ public class DeskReservationService {
         List<DeskDb> availableList = new ArrayList<>();
         HttpResponseWrapper httpResponseWrapper;
         try {
-            for (DeskDb deskDb : deskDbRepository.findDesksByBuildingAndFloorAndRoom(roomId, floorId, buildingId)) {
-                if (DeskUtil.checkIfDeskAvailable(startReservation, endReservation, deskDb)) {
-                    availableList.add(deskDb);
-                };
+
+            if (DeskReservationUtil.ifTimeFormatGood(startReservation, endReservation)) {
+                for (DeskDb deskDb : deskDbRepository.findDesksByBuildingAndFloorAndRoom(roomId, floorId, buildingId)) {
+                    if (DeskReservationUtil.checkIfDeskAvailable(startReservation, endReservation, deskDb)) {
+                        availableList.add(deskDb);
+                    };
+                }
+                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_AVAILABLE_DESK_IN_PERIOD_SUCCESS_MESSAGE, availableList);
+            } else {
+                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.TIME_FORMAT_ERROR_MESSAGE, availableList);
             }
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_AVAILABLE_DESK_IN_PERIOD_SUCCESS_MESSAGE, availableList);
+
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), availableList);
         }

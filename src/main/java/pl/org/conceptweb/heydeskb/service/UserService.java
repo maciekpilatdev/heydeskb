@@ -16,6 +16,7 @@ import pl.org.conceptweb.heydeskb.repository.UserRepository;
 import pl.org.conceptweb.heydeskb.utility.PasswordUtil;
 import pl.org.conceptweb.heydeskb.utility.UserNameUtil;
 import pl.org.conceptweb.heydeskb.model.MethodResponse;
+import pl.org.conceptweb.heydeskb.configuration.AppConfiguration;
 
 @Log
 @Service
@@ -32,7 +33,6 @@ public class UserService {
     @Autowired
     UserConverter userConverter;
 
-    //    @Cacheable
     public User getLogged() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -55,11 +55,11 @@ public class UserService {
         return httpResponseWrapper;
     }
 
-    public HttpResponseWrapper add(String userName, String password, String repeatedPassword, String loggedUserName) {
+    public HttpResponseWrapper add(String userName, String password, String repeatedPassword) {
         HttpResponseWrapper httpResponseWrapper;
         try {
-            MethodResponse passwordMethodResponse = passwordUtil.ifPasswordIsProper(password, repeatedPassword, 6, 50);
-            MethodResponse userNameMethordResponse = userNameUtil.ifUserNameIsProper(userName, 6, 50);
+            MethodResponse passwordMethodResponse = passwordUtil.ifPasswordIsProper(password, repeatedPassword, AppConfiguration.MIN_PASSWORD_LENGTH, AppConfiguration.MAX_PASSWORD_LENGTH);
+            MethodResponse userNameMethordResponse = userNameUtil.ifUserNameIsProper(userName, AppConfiguration.MIN_USER_NAME_LENGTH, AppConfiguration.MAX_USER_NAME_LENGTH);
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, passwordMethodResponse.getMessage() + " / " + userNameMethordResponse.getMessage(), new ArrayList());
             if (passwordMethodResponse.getStatus().equals(Constans.OK) && userNameMethordResponse.getStatus().equals(Constans.OK)) {
                 httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_USER_SUCCESS_MESSAGE, Arrays.asList(userRepository.save(new User(
@@ -70,7 +70,7 @@ public class UserService {
                         null,
                         null,
                         false,
-                        userRepository.findByUserName(loggedUserName).get().getCompanyDb()))));
+                        getLogged().getCompanyDb()))));
             }
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());

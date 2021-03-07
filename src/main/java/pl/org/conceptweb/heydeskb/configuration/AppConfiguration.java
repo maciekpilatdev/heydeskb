@@ -2,16 +2,14 @@ package pl.org.conceptweb.heydeskb.configuration;
 
 import com.sun.istack.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 //@Component
 //@EnableConfigurationProperties
 @Configuration
 @ConfigurationProperties(prefix = "app")
 public class AppConfiguration {
-    
+
     @NotNull
     private String url;
 
@@ -23,5 +21,9 @@ public class AppConfiguration {
         this.url = url;
     }
     
-    
+    public static final byte MIN_USER_NAME_LENGTH = 6;
+    public static final int MAX_USER_NAME_LENGTH = 50;
+    public static final byte MIN_PASSWORD_LENGTH = 6;
+    public static final int MAX_PASSWORD_LENGTH = 50;
+
 }
