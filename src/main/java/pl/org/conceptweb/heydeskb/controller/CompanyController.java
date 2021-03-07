@@ -14,7 +14,7 @@ import pl.org.conceptweb.heydeskb.model.CompanyAndUser;
 @Log
 @RestController
 @RequestMapping("/company")
-@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com/", maxAge = 3600)
 public class CompanyController {
     
     @Autowired

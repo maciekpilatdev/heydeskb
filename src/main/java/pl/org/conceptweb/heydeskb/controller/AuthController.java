@@ -29,7 +29,7 @@ import pl.org.conceptweb.heydeskb.utility.JwtUtil;
 
 @Log
 @RestController
-@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
+@CrossOrigin(origins = {"https://heydeskb.herokuapp.com/"}, maxAge = 3600)
 public class AuthController {
 
     @Autowired
@@ -74,7 +74,7 @@ public class AuthController {
         return wrapper;
     }
 
-    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
+//    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public HttpResponseWrapper createAuthebticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         User user = new User();

@@ -18,7 +18,7 @@ import pl.org.conceptweb.heydeskb.service.RoomService;
 @Log
 @RestController
 @RequestMapping("/room")
-@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com/", maxAge = 3600)
 public class RoomController {
     @Autowired
     RoomService roomService;

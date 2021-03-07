@@ -14,7 +14,7 @@ import pl.org.conceptweb.heydeskb.service.DropdownService;
 @RestController
 @RequestMapping("/dropdown")
 @Log
-@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com/", maxAge = 3600)
 public class DropdownController {
 
     @Autowired

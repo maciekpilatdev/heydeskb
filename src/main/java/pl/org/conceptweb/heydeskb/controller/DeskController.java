@@ -18,7 +18,7 @@ import pl.org.conceptweb.heydeskb.service.DeskService;
 @RestController
 @Log
 @RequestMapping("/desk")
-@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com/", maxAge = 3600)
 public class DeskController {
 
     @Autowired

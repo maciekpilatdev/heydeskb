@@ -15,7 +15,7 @@ import pl.org.conceptweb.heydeskb.model.DeskReservation;
 
 @RestController
 @RequestMapping("/deskerservation")
-@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com/", maxAge = 3600)
 public class DeskReservationController {
 
     @Autowired

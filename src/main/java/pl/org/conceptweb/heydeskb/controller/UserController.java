@@ -20,7 +20,7 @@ import pl.org.conceptweb.heydeskb.service.UserService;
 @Log
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com/", maxAge = 3600)
 public class UserController {
 
     @Autowired
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, allowedHeaders = "*", methods = {RequestMethod.DELETE}, maxAge = 3600)
+//    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, allowedHeaders = "*", methods = {RequestMethod.DELETE}, maxAge = 3600)
     public HttpResponseWrapper deleteUserById(@RequestParam Long userId) {
         return userService.deleteById(userId);
     }
