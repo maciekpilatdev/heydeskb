@@ -2,7 +2,6 @@ package pl.org.conceptweb.heydeskb.controller;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.security.Principal;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +20,7 @@ import pl.org.conceptweb.heydeskb.service.UserService;
 @Log
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
 public class UserController {
 
     @Autowired

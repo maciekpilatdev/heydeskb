@@ -29,6 +29,7 @@ import pl.org.conceptweb.heydeskb.utility.JwtUtil;
 
 @Log
 @RestController
+@CrossOrigin(origins = "https://heydeskb.herokuapp.com", maxAge = 3600)
 public class AuthController {
 
     @Autowired
@@ -52,7 +53,6 @@ public class AuthController {
     @Value("${configuration.jwt.valid}")
     private Long jwtValidTime;
 
-    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     public HttpResponseWrapper signUp(@RequestBody User loginData) {
 
