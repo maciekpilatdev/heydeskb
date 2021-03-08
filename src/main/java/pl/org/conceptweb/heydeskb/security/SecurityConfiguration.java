@@ -64,10 +64,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 
-                .antMatchers("/**").permitAll()
-                .antMatchers("/*").permitAll()
+//                .antMatchers("/**").permitAll()
+//                .antMatchers("/*").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("*").permitAll()
+//                .antMatchers("*").permitAll()
 
                 .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
