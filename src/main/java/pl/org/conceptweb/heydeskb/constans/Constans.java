@@ -75,5 +75,11 @@ public class Constans {
     public static String AUTHORITY_ADMIN = "ADMIN";
 
     public static String TIME_FORMAT_ERROR_MESSAGE = "błędny czas rezerwacji";
-
+    public static String ADD_COMPANY = "dodano firmę i utworzono użytkownika";
+    
+    // INPUT TEST 
+    public static String IS_NOT_NULL_ERROR_MESSAGE = "nie wprowadzono danych / ";
+    public static String IS_LENGTH_APPROPRIATE_ERROR_MESSAGE = "długość wprowadzonego tekstu jest nieodpowiednia / ";
+    public static String IS_EEMAIL_ADDRESS_ERROR_MESSAGE = "nie przypomina adresu poczty elektronicznej / ";
+    public static String IS_NUMBER_ERROR_MESSAGE = "zawiera inne znaki niż cyfry / ";
 }

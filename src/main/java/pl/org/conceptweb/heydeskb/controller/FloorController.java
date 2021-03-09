@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.org.conceptweb.heydeskb.datacombinator.FloorCombinatorService;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.model.Floor;
 import pl.org.conceptweb.heydeskb.service.FloorService;
@@ -23,6 +24,8 @@ public class FloorController {
 
     @Autowired
     FloorService floorService;
+    @Autowired
+    FloorCombinatorService floorDataCombinator;
 
     @PostMapping()
     public HttpResponseWrapper addFloor(@RequestBody Floor floor) {
@@ -33,8 +36,14 @@ public class FloorController {
     public HttpResponseWrapper getFloorListByCompany(Principal principal) {
         return floorService.getFloorListByCompany(principal.getName());
     }
+
     @DeleteMapping()
-    public HttpResponseWrapper deleteFloor(@RequestParam Long floorId, Principal principal){        
+    public HttpResponseWrapper deleteFloor(@RequestParam Long floorId, Principal principal) {
         return floorService.deleteFloor(floorId, principal.getName());
+    }
+
+    @GetMapping("/company/combinator")
+    public HttpResponseWrapper getCombinatedListByCompany(Principal principal) {
+        return floorDataCombinator.getListDataByCompany();
     }
 }

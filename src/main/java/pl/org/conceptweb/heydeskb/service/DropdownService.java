@@ -32,7 +32,7 @@ public class DropdownService {
     public HttpResponseWrapper getBuildings() {
         HttpResponseWrapper hrw;
         try {
-            hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_BUILGINGS_SUCCESS_MESSAGE, buildingRepository.getAllByCompany(userRepository.findByUserName(userService.getLogged().getUserName()).get().getCompanyDb().getId()));
+            hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_BUILGINGS_SUCCESS_MESSAGE, buildingRepository.findByCompany(userRepository.findByUserName(userService.getLogged().getUserName()).get().getCompanyDb().getId()));
         } catch (Exception e) {
             hrw = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
@@ -43,7 +43,7 @@ public class DropdownService {
         HttpResponseWrapper hrw;
         try {
             if (buildingId != 0) {
-                hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_FLOORS_SUCCESS_MESSAGE, floorRepository.findByBuildingId(buildingId));
+                hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_FLOORS_SUCCESS_MESSAGE, floorRepository.findAllByCompanyAndBuilding(userService.getLogged().getCompanyDb().getId(), buildingId));
             } else {
                 hrw = new HttpResponseWrapper(Constans.OK, Constans.GET_FLOORS_SUCCESS_MESSAGE, floorRepository.findAll());
             }

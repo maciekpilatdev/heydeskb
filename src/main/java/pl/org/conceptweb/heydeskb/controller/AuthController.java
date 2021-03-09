@@ -29,7 +29,7 @@ import pl.org.conceptweb.heydeskb.utility.JwtUtil;
 
 @Log
 @RestController
-@CrossOrigin(origins = {"https://heydeskb.herokuapp.com/"}, maxAge = 3600)
+@CrossOrigin(origins = {"https://heydeskb.herokuapp.com/", ""}, maxAge = 3600)
 public class AuthController {
 
     @Autowired

@@ -55,7 +55,7 @@ public class BuildingService {
     public HttpResponseWrapper getBuildingListByCompany() {
         HttpResponseWrapper httpResponseWrapper;
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE, buildingConverter.buildingsDbToBuildings(buildingDbRepository.getAllByCompany(userService.getLogged().getCompanyDb().getId())));
+            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE, buildingConverter.buildingsDbToBuildings(buildingDbRepository.findByCompany(userService.getLogged().getCompanyDb().getId())));
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
@@ -80,7 +80,7 @@ public class BuildingService {
     }
 
     public Boolean isNameUnique(String buildingName) {
-        return buildingDbRepository.getAllByCompanyAndName(userService.getLogged().getCompanyDb().getId(), buildingName).isEmpty();
+        return buildingDbRepository.findByCompanyAndName(userService.getLogged().getCompanyDb().getId(), buildingName).isEmpty();
     }
 
 }

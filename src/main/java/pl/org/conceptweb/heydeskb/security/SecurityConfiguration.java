@@ -31,23 +31,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
+                
+                .antMatchers("floor/company/combinator").hasAnyAuthority("ADMIN")
+                .antMatchers("room/company/combinator").hasAnyAuthority("ADMIN")
+                
                 .antMatchers("/building").hasAnyAuthority("ADMIN")
                 .antMatchers("/floor").hasAnyAuthority("ADMIN")
                 .antMatchers("/floor/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/room").hasAnyAuthority("ADMIN")
                 .antMatchers("/room/company").hasAnyAuthority("ADMIN")
-                
                 .antMatchers("/desk").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/desk/company").hasAnyAuthority("ADMIN")
                 .antMatchers("/desk/reservation").hasAnyAuthority("ADMIN,USER")
-                .antMatchers("/desk/reservation/user").hasAnyAuthority("ADMIN,USER")
-                
+                .antMatchers("/desk/reservation/user").hasAnyAuthority("ADMIN,USER")               
                 .antMatchers("/deskerservation").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/deskerservation/user").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/deskerservation/getallbycompany").hasAnyAuthority("ADMIN,USER")
                 .antMatchers("/company").permitAll()
-//                .antMatchers("/deskerservation/delete").hasAnyAuthority("ADMIN,USER")
-//                .antMatchers("/user").hasAuthority("USER")
                 .antMatchers("/admin").hasAuthority("ADMIN")
                 .antMatchers("/user").hasAuthority("ADMIN,USER")
                 .antMatchers("/user/add").hasAuthority("ADMIN")
@@ -63,11 +63,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/stats/basic").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
-                
-//                .antMatchers("/**").permitAll()
                 .antMatchers("/*").permitAll()
                 .antMatchers("/").permitAll()
-//                .antMatchers("*").permitAll()
 
                 .anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()

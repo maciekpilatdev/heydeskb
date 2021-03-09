@@ -12,7 +12,7 @@ private String name;
 private String mail;
 private String phone;
 private String street;
-private Long streetNumber;
+private String streetNumber;
 private String postalCode;
 private String city;
 private String country;

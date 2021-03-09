@@ -25,5 +25,7 @@ public class AppConfiguration {
     public static final int MAX_USER_NAME_LENGTH = 50;
     public static final byte MIN_PASSWORD_LENGTH = 6;
     public static final int MAX_PASSWORD_LENGTH = 50;
+     public static final int MIN_INPUT_LENGTH = 3;
+      public static final int MAX_INPUT_LENGTH = 50;
 
 }

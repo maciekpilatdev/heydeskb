@@ -17,7 +17,7 @@ public class CompanyDb {
     private String mail;
     private String phone;
     private String street;
-    private Long streetNumber;
+    private String streetNumber;
     private String postalCode;
     private String city;
     private String country;
@@ -31,7 +31,7 @@ public class CompanyDb {
     public CompanyDb() {
     }
 
-    public CompanyDb(Long id, String name, String mail, String phone, String street, Long streetNumber, String postalCode, String city, String country, List<BuildingDb> buildingDb, List<User> users) {
+    public CompanyDb(Long id, String name, String mail, String phone, String street, String streetNumber, String postalCode, String city, String country, List<BuildingDb> buildingDb, List<User> users) {
         this.id = id;
         this.name = name;
         this.mail = mail;
@@ -45,7 +45,7 @@ public class CompanyDb {
         this.users = users;
     }
 
-    public CompanyDb(String name, String mail, String phone, String street, Long streetNumber, String postalCode, String city, String country, List<BuildingDb> buildingDb, List<User> users) {
+    public CompanyDb(String name, String mail, String phone, String street, String streetNumber, String postalCode, String city, String country, List<BuildingDb> buildingDb, List<User> users) {
         this.name = name;
         this.mail = mail;
         this.phone = phone;
@@ -98,11 +98,11 @@ public class CompanyDb {
         this.street = street;
     }
 
-    public Long getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(Long streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 

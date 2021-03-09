@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.org.conceptweb.heydeskb.datacombinator.RoomCombinatorService;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.model.Room;
 import pl.org.conceptweb.heydeskb.service.RoomService;
@@ -20,8 +21,11 @@ import pl.org.conceptweb.heydeskb.service.RoomService;
 @RequestMapping("/room")
 @CrossOrigin(origins = "https://heydeskb.herokuapp.com/", maxAge = 3600)
 public class RoomController {
+
     @Autowired
     RoomService roomService;
+    @Autowired
+    RoomCombinatorService roomCombinatorService;
 
     @PostMapping()
     public HttpResponseWrapper addRoom(@RequestBody Room room) {
@@ -32,9 +36,14 @@ public class RoomController {
     public HttpResponseWrapper getRoomListByCompany(Principal principal) {
         return roomService.getRoomListByCompany(principal.getName());
     }
-    
+
     @DeleteMapping()
-    public HttpResponseWrapper deleteRoom(@RequestParam Long roomId, Principal principal){        
+    public HttpResponseWrapper deleteRoom(@RequestParam Long roomId, Principal principal) {
         return roomService.deleteRoom(roomId, principal.getName());
+    }
+
+    @GetMapping("/company/combinator")
+    public HttpResponseWrapper getRoomListByCompany() {
+        return roomCombinatorService.getListDataByCompany();
     }
 }

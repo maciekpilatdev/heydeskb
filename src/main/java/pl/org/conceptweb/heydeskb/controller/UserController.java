@@ -44,7 +44,6 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-//    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, allowedHeaders = "*", methods = {RequestMethod.DELETE}, maxAge = 3600)
     public HttpResponseWrapper deleteUserById(@RequestParam Long userId) {
         return userService.deleteById(userId);
     }

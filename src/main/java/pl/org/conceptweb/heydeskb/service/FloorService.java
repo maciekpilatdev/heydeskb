@@ -54,7 +54,7 @@ public class FloorService {
     public HttpResponseWrapper getFloorListByCompany(String loggedUserName) {
         HttpResponseWrapper httpResponseWrapper;
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, floorConverter.floorsDbToFloors(floorDbRepository.findByCompanyId(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
+            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, floorConverter.floorsDbToFloors(floorDbRepository.findByCompany(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
         } catch (Exception e) {
             httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
@@ -79,6 +79,6 @@ public class FloorService {
     }
 
     public Boolean isNameUnique(Floor floor) {
-        return floorDbRepository.getAllByCompanyAndBuildingAndName(userService.getLogged().getCompanyDb().getId(), floor.getBuilding(), floor.getName()).isEmpty();
+        return floorDbRepository.findAllByCompanyAndBuildingAndName(userService.getLogged().getCompanyDb().getId(), floor.getBuilding(), floor.getName()).isEmpty();
     }
 }
