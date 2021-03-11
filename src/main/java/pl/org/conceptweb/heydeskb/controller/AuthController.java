@@ -2,6 +2,7 @@ package pl.org.conceptweb.heydeskb.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,7 +75,6 @@ public class AuthController {
         return wrapper;
     }
 
-//    @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public HttpResponseWrapper createAuthebticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         User user = new User();
@@ -99,7 +99,8 @@ public class AuthController {
             ))));
 
         } catch (BadCredentialsException e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), Arrays.asList(user));
+            log.log(Level.WARNING, "AuthController: createAuthebticationToken: ", e);
+            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.CREDENCIALS_ERROR_MESSAGE, Arrays.asList(user));
         }
         return httpResponseWrapper;
     }

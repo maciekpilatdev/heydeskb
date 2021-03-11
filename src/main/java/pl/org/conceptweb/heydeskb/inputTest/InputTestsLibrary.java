@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class InputTestsLibrary {
 
     public Boolean isNotNull(String text) {
-        if (text.equals(null)) {
+        if (text.isEmpty()) {
             return false;
         }
         return true;

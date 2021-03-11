@@ -2,6 +2,7 @@ package pl.org.conceptweb.heydeskb.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -40,19 +41,17 @@ public class UserService {
     }
 
     public HttpResponseWrapper deleteById(Long userId) {
-        HttpResponseWrapper httpResponseWrapper;
-
         try {
             User user = userRepository.findById(userId).get();
             user.setIsDeleted(Boolean.TRUE);
             user.setActive(Boolean.FALSE);
             userRepository.save(user);
 
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_USER_BY_ID_SUCCESS_MESSAGE, Arrays.asList(userConverter.userToUserTrans(userRepository.save(user))));
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+            return new HttpResponseWrapper(Constans.OK, Constans.DELETE_USER_BY_ID_SUCCESS_MESSAGE, Arrays.asList(userConverter.userToUserTrans(userRepository.save(user))));
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: UserService: deleteById: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public HttpResponseWrapper add(String userName, String password, String repeatedPassword) {
@@ -72,19 +71,19 @@ public class UserService {
                         false,
                         getLogged().getCompanyDb()))));
             }
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: UserService: add: ", e);
+            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
         return httpResponseWrapper;
     }
 
     public HttpResponseWrapper getAllByCompany(Long companyId) {
-        HttpResponseWrapper httpResponseWrapper;
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_ALL_BY_COMPANY_SUCCESS_MESSAGE, userRepository.findAllUsersByCompany(companyId));
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+            return new HttpResponseWrapper(Constans.OK, Constans.GET_ALL_BY_COMPANY_SUCCESS_MESSAGE, userRepository.findAllUsersByCompany(companyId));
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: UserService: getAllByCompany: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 }

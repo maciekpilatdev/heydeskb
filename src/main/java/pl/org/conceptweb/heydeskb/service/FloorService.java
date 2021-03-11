@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.org.conceptweb.heydeskb.constans.Constans;
 import pl.org.conceptweb.heydeskb.converter.FloorConverter;
+import pl.org.conceptweb.heydeskb.inputTest.InputTester;
+import pl.org.conceptweb.heydeskb.inputTest.TextInputStrategy;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.repository.FloorDbRepository;
 import pl.org.conceptweb.heydeskb.model.Floor;
 import pl.org.conceptweb.heydeskb.model.FloorDb;
-import pl.org.conceptweb.heydeskb.model.User;
+import pl.org.conceptweb.heydeskb.model.MethodResponse;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
 import pl.org.conceptweb.heydeskb.security.SecurityAuthoritiesCheck;
 
@@ -32,50 +34,52 @@ public class FloorService {
     UserService userService;
     @Autowired
     FloorService floorService;
+    @Autowired
+    InputTester inputTester;
+    @Autowired
+    TextInputStrategy textInputStrategy;
 
     public HttpResponseWrapper addFloor(Floor floor) {
-        HttpResponseWrapper httpResponseWrapper;
-        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN);
-        Boolean isNameUnique = isNameUnique(floor);
         try {
-            if (hasAuthority && isNameUnique) {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_FLOOR_SUCCESS_MESSAGE, Arrays.asList(floorConverter.floorDbToFloor(floorDbRepository.save(floorConverter.floorToFloorDb(floor)))));
-            } else if (hasAuthority) {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            MethodResponse floorName = inputTester.runTest(textInputStrategy, floor.getName());
+            if (floorName.getStatus().equals(Constans.ERROR)) {
+                return new HttpResponseWrapper(Constans.ERROR, floorName.getMessage(), new ArrayList());
+            } else if (!isNameUnique(floor)) {
+                return new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            } else if (!securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
+                return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             } else {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.OK, Constans.ADD_FLOOR_SUCCESS_MESSAGE, Arrays.asList(floorConverter.floorDbToFloor(floorDbRepository.save(floorConverter.floorToFloorDb(floor)))));
             }
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: FloorService: addFloor: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public HttpResponseWrapper getFloorListByCompany(String loggedUserName) {
-        HttpResponseWrapper httpResponseWrapper;
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, floorConverter.floorsDbToFloors(floorDbRepository.findByCompany(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+            return new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, floorConverter.floorsDbToFloors(floorDbRepository.findByCompany(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: FloorService: getFloorListByCompany: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public HttpResponseWrapper deleteFloor(Long floorId, String loggedUserName) {
-        HttpResponseWrapper httpResponseWrapper;
         FloorDb floorDb = floorDbRepository.getOne(floorId);
         try {
-            if (securityAuthoritiesCheck.hasAuthority(loggedUserName, "ADMIN")) {
+            if (securityAuthoritiesCheck.hasAuthority(loggedUserName, Constans.AUTHORITY_ADMIN)) {
                 floorDb.setIsDeleted(true);
                 floorDbRepository.save(floorDb);
-                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_FLOOR_SUCCESS_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.OK, Constans.DELETE_FLOOR_SUCCESS_MESSAGE, new ArrayList());
             } else {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             }
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: FloorService: deleteFloor: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public Boolean isNameUnique(Floor floor) {

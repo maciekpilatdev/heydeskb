@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.org.conceptweb.heydeskb.constans.Constans;
 import pl.org.conceptweb.heydeskb.converter.BuildingConverter;
+import pl.org.conceptweb.heydeskb.inputTest.InputTester;
+import pl.org.conceptweb.heydeskb.inputTest.TextInputStrategy;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.model.Building;
 import pl.org.conceptweb.heydeskb.model.BuildingDb;
-import pl.org.conceptweb.heydeskb.model.User;
+import pl.org.conceptweb.heydeskb.model.MethodResponse;
 import pl.org.conceptweb.heydeskb.repository.BuildingDbRepository;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
 import pl.org.conceptweb.heydeskb.security.SecurityAuthoritiesCheck;
@@ -30,57 +32,56 @@ public class BuildingService {
     SecurityAuthoritiesCheck securityAuthoritiesCheck;
     @Autowired
     UserService userService;
+    @Autowired
+    InputTester inputTester;
+    @Autowired
+    TextInputStrategy textInputStrategy;
 
     public HttpResponseWrapper addBuilding(Building building) {
-        HttpResponseWrapper httpResponseWrapper;
-        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN);
-        Boolean isNameUnique = isNameUnique(building.getName());
-        
         try {
-            if (hasAuthority && isNameUnique) {
-                BuildingDb buildingDb = buildingConverter.buildingToBuildingDb(building);
-                buildingDb.setCompanyDb(userService.getLogged().getCompanyDb());
-                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Arrays.asList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(buildingDb))));
-            } else if (hasAuthority) {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
-            } else {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+            MethodResponse buildingName = inputTester.runTest(textInputStrategy, building.getName());
+            if (buildingName.getStatus().equals(Constans.ERROR)) {
+                return new HttpResponseWrapper(Constans.ERROR, buildingName.getMessage(), new ArrayList());
+            } else if (!isNameUnique(building.getName())) {
+                return new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            } else if (!securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
+                return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             }
+            
+            BuildingDb buildingDb = buildingConverter.buildingToBuildingDb(building);
+            buildingDb.setCompanyDb(userService.getLogged().getCompanyDb());
+            return new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Arrays.asList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(buildingDb))));
         } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+            log.log(Level.WARNING, "ERROR: BuildingService: addBuilding: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public HttpResponseWrapper getBuildingListByCompany() {
-        HttpResponseWrapper httpResponseWrapper;
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE, buildingConverter.buildingsDbToBuildings(buildingDbRepository.findByCompany(userService.getLogged().getCompanyDb().getId())));
+            return new HttpResponseWrapper(Constans.OK, Constans.GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE, buildingConverter.buildingsDbToBuildings(buildingDbRepository.findByCompany(userService.getLogged().getCompanyDb().getId())));
         } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+            return new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public HttpResponseWrapper deleteBuilding(Long buildingId) {
-        HttpResponseWrapper httpResponseWrapper;
-        BuildingDb buildingDb = buildingDbRepository.getOne(buildingId);
         try {
+            BuildingDb buildingDb = buildingDbRepository.getOne(buildingId);
             if (securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), "ADMIN")) {
                 buildingDb.setIsDeleted(true);
                 buildingDbRepository.save(buildingDb);
-                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_BUILDING_SUCCESS_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.OK, Constans.DELETE_BUILDING_SUCCESS_MESSAGE, new ArrayList());
             } else {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             }
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: BuildingService: deleteBuilding: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public Boolean isNameUnique(String buildingName) {
         return buildingDbRepository.findByCompanyAndName(userService.getLogged().getCompanyDb().getId(), buildingName).isEmpty();
     }
-
 }

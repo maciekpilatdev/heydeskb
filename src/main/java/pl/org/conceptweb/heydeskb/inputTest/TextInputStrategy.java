@@ -1,6 +1,5 @@
 package pl.org.conceptweb.heydeskb.inputTest;
 
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

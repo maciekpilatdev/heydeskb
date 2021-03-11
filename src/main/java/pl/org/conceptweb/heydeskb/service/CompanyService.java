@@ -2,6 +2,7 @@ package pl.org.conceptweb.heydeskb.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,55 +53,52 @@ public class CompanyService {
     PasswordStrategy passwordStrategy;
 
     public HttpResponseWrapper add(CompanyAndUser companyAndUser) {
-        HttpResponseWrapper httpResponseWrapper = null;
 
+        MethodResponse companyNameTest = inputTester.runTest(textInputStrategy, companyAndUser.getCompany().getName());
+        MethodResponse companyMailTest = inputTester.runTest(emailStrategy, companyAndUser.getCompany().getMail());
+        MethodResponse companyPhoneTest = inputTester.runTest(numberStrategy, companyAndUser.getCompany().getPhone());
+        MethodResponse companyStreetTest = inputTester.runTest(textInputStrategy, companyAndUser.getCompany().getStreet());
         MethodResponse companyCityTest = inputTester.runTest(textInputStrategy, companyAndUser.getCompany().getCity());
         MethodResponse companyCountryTest = inputTester.runTest(textInputStrategy, companyAndUser.getCompany().getCountry());
-        MethodResponse companyMailTest = inputTester.runTest(emailStrategy, companyAndUser.getCompany().getMail());
-        MethodResponse companyNameTest = inputTester.runTest(textInputStrategy, companyAndUser.getCompany().getName());
-        MethodResponse companyPhoneTest = inputTester.runTest(numberStrategy, companyAndUser.getCompany().getPhone());
-        //MethodResponse companyPhoneTest = inputTester.runTest(numberStrategy, companyAndUser.getCompany().getPostalCode());
-        MethodResponse companyStreetTest = inputTester.runTest(textInputStrategy, companyAndUser.getCompany().getStreet());
-        //MethodResponse companyStreetTest = inputTester.runTest(numberStrategy, companyAndUser.getCompany().getStreetNumber());
         MethodResponse passwordTest = inputTester.runTest(passwordStrategy, companyAndUser.getPassword() + "," + companyAndUser.getRepeatedPassword());
         MethodResponse userNameTest = inputTester.runTest(textInputStrategy, companyAndUser.getUserName());
 
-        if (companyCityTest.getStatus().equals(Constans.ERROR)) {
+        if (companyNameTest.getStatus().equals(Constans.ERROR)) {
+            log.log(Level.WARNING, "1");
+            return new HttpResponseWrapper(companyNameTest.getStatus(), companyNameTest.getMessage(), new ArrayList());
+        } else if (companyMailTest.getStatus().equals(Constans.ERROR)) {
+            log.log(Level.WARNING, "2");
+            return new HttpResponseWrapper(companyMailTest.getStatus(), companyMailTest.getMessage(), new ArrayList());
+        } else if (companyPhoneTest.getStatus().equals(Constans.ERROR)) {
+            log.log(Level.WARNING, "3");
+            return new HttpResponseWrapper(companyPhoneTest.getStatus(), companyPhoneTest.getMessage(), new ArrayList());
+        } else if (companyStreetTest.getStatus().equals(Constans.ERROR)) {
+            log.log(Level.WARNING, "4");
+            return new HttpResponseWrapper(companyStreetTest.getStatus(), companyStreetTest.getMessage(), new ArrayList());
+        } else if (companyCityTest.getStatus().equals(Constans.ERROR)) {
             return new HttpResponseWrapper(companyCityTest.getStatus(), companyCityTest.getMessage(), new ArrayList());
         } else if (companyCountryTest.getStatus().equals(Constans.ERROR)) {
             return new HttpResponseWrapper(companyCountryTest.getStatus(), companyCountryTest.getMessage(), new ArrayList());
-        } else if (companyMailTest.getStatus().equals(Constans.ERROR)) {
-            return new HttpResponseWrapper(companyMailTest.getStatus(), companyMailTest.getMessage(), new ArrayList());
-        } else if (companyNameTest.getStatus().equals(Constans.ERROR)) {
-            return new HttpResponseWrapper(companyNameTest.getStatus(), companyNameTest.getMessage(), new ArrayList());
-        } else if (companyPhoneTest.getStatus().equals(Constans.ERROR)) {
-            return new HttpResponseWrapper(companyPhoneTest.getStatus(), companyPhoneTest.getMessage(), new ArrayList());
-        } else if (companyStreetTest.getStatus().equals(Constans.ERROR)) {
-            return new HttpResponseWrapper(companyStreetTest.getStatus(), companyStreetTest.getMessage(), new ArrayList());
+        } else if (userNameTest.getStatus().equals(Constans.ERROR)) {
+            return new HttpResponseWrapper(userNameTest.getStatus(), userNameTest.getMessage(), new ArrayList());
         } else if (passwordTest.getStatus().equals(Constans.ERROR)) {
             return new HttpResponseWrapper(passwordTest.getStatus(), passwordTest.getMessage(), new ArrayList());
-        }  else if (companyCountryTest.getStatus().equals(Constans.ERROR)) {
-            return new HttpResponseWrapper(userNameTest.getStatus(), userNameTest.getMessage(), new ArrayList());
-        }
-
+        } 
+        
         try {
-//            MethodResponse passwordMethodResponse = passwordUtil.ifPasswordIsProper(companyAndUser.getPassword(), companyAndUser.getRepeatedPassword(), AppConfiguration.MIN_PASSWORD_LENGTH, AppConfiguration.MAX_PASSWORD_LENGTH);
-//            MethodResponse userNameMethordResponse = userNameUtil.ifUserNameIsProper(companyAndUser.getUserName(), AppConfiguration.MIN_USER_NAME_LENGTH, AppConfiguration.MAX_USER_NAME_LENGTH);
+            return new HttpResponseWrapper(Constans.OK, Constans.ADD_COMPANY, Arrays.asList(userRepository.save(new User(
+                    companyAndUser.getUserName(),
+                    passwordEncoder.encode(companyAndUser.getPassword()),
+                    true,
+                    Constans.AUTHORITY_ADMIN,
+                    null,
+                    null,
+                    false,
+                    companyDbRepository.save(companyConverter.companyToCompanyDb(companyAndUser.getCompany()))))));
 
-//            if (passwordMethodResponse.getStatus().equals(Constans.OK) && userNameMethordResponse.getStatus().equals(Constans.OK)) {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_COMPANY, Arrays.asList(userRepository.save(new User(
-                        companyAndUser.getUserName(),
-                        passwordEncoder.encode(companyAndUser.getPassword()),
-                        true,
-                        "ADMIN",
-                        null,
-                        null,
-                        false,
-                        companyDbRepository.save(companyConverter.companyToCompanyDb(companyAndUser.getCompany()))))));
-//            }
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, e.toString());
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 }

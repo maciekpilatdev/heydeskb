@@ -2,18 +2,19 @@ package pl.org.conceptweb.heydeskb.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.org.conceptweb.heydeskb.constans.Constans;
 import pl.org.conceptweb.heydeskb.converter.RoomConverter;
+import pl.org.conceptweb.heydeskb.inputTest.InputTester;
+import pl.org.conceptweb.heydeskb.inputTest.TextInputStrategy;
 import pl.org.conceptweb.heydeskb.model.FloorDb;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
+import pl.org.conceptweb.heydeskb.model.MethodResponse;
 import pl.org.conceptweb.heydeskb.model.Room;
 import pl.org.conceptweb.heydeskb.model.RoomDb;
-import pl.org.conceptweb.heydeskb.model.User;
 import pl.org.conceptweb.heydeskb.repository.FloorDbRepository;
 import pl.org.conceptweb.heydeskb.repository.RoomDbRepository;
 import pl.org.conceptweb.heydeskb.repository.UserRepository;
@@ -35,50 +36,52 @@ public class RoomService {
     SecurityAuthoritiesCheck securityAuthoritiesCheck;
     @Autowired
     UserService userService;
+    @Autowired
+    InputTester inputTester;
+    @Autowired
+    TextInputStrategy textInputStrategy;
 
     public HttpResponseWrapper addRoom(Room room) {
-        HttpResponseWrapper httpResponseWrapper;
-        Boolean hasAuthority = securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN);
-        Boolean isNameUnique = isNameUnique(room);
         try {
-            if (hasAuthority && isNameUnique) {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.ADD_ROOM_SUCCESS_MESSAGE, Arrays.asList(roomConverter.roomDbToRoom(roomDbRepository.save(roomConverter.roomToRoomDb(room)))));
-            } else if (hasAuthority) {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            MethodResponse roomName = inputTester.runTest(textInputStrategy, room.getName());
+            if (roomName.getStatus().equals(Constans.ERROR)) {
+                return new HttpResponseWrapper(Constans.ERROR, roomName.getMessage(), new ArrayList());
+            } else if (!isNameUnique(room)) {
+                return new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+            } else if (!securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
+                return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             } else {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.OK, Constans.ADD_ROOM_SUCCESS_MESSAGE, Arrays.asList(roomConverter.roomDbToRoom(roomDbRepository.save(roomConverter.roomToRoomDb(room)))));
             }
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: RoomService: addRoom: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public HttpResponseWrapper getRoomListByCompany(String loggedUserName) {
-        HttpResponseWrapper httpResponseWrapper;
         try {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, roomConverter.roomsDbToRooms(roomDbRepository.findByCompanyId(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+            return new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, roomConverter.roomsDbToRooms(roomDbRepository.findByCompanyId(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: RoomService: getRoomListByCompany: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public HttpResponseWrapper deleteRoom(Long roomId, String loggedUserName) {
-        HttpResponseWrapper httpResponseWrapper;
         RoomDb roomDb = roomDbRepository.getOne(roomId);
         try {
-            if (securityAuthoritiesCheck.hasAuthority(loggedUserName, "ADMIN")) {
+            if (securityAuthoritiesCheck.hasAuthority(loggedUserName, Constans.INADEQUATE_DATA)) {
                 roomDb.setIsDeleted(true);
                 roomDbRepository.save(roomDb);
-                httpResponseWrapper = new HttpResponseWrapper(Constans.OK, Constans.DELETE_FLOOR_SUCCESS_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.OK, Constans.DELETE_FLOOR_SUCCESS_MESSAGE, new ArrayList());
             } else {
-                httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+                return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             }
-        } catch (Exception e) {
-            httpResponseWrapper = new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
+        } catch (NullPointerException e) {
+            log.log(Level.WARNING, "ERROR: RoomService: deleteRoom: ", e);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
-        return httpResponseWrapper;
     }
 
     public Boolean isNameUnique(Room room) {

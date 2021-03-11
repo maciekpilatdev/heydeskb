@@ -6,6 +6,10 @@ public class Constans {
     public static String SUCCESS = "sukces"; //"success";
     public static String OK = "ok";
     public static String ERROR = "błąd"; //"error";
+    public static String INADEQUATE_DATA = "nieodpowiednie dane";
+    public static String AUTHORITY_ADMIN = "ADMIN";
+    public static String AUTHORITY_USER = "USER";
+    public static String HAS_AUTHORITY_ERROR_MESSAGE = "brak uprawnień"; //"insufficient authority";
 
     public static String IF_PASSWORD_IS_PROPER_SUCCESS_MESSAGE = "hasło jest poprawne";
     public static String IF_PASSWORD_IDENTICAL_ERROR_MESSAGE = "hasła się nie powtarzają";
@@ -71,15 +75,15 @@ public class Constans {
     public static String GET_DESK_LIST_BY_COMPANY_SUCCESS_MESSAGE = "lista wszystkich biurek"; //"list of desk by company";
     public static String DELETE_DESK_SUCCESS_MESSAGE = "biurko skasowane"; //"desk deleted";
 
-    public static String HAS_AUTHORITY_ERROR_MESSAGE = "brak uprawnień"; //"insufficient authority";
-    public static String AUTHORITY_ADMIN = "ADMIN";
-
     public static String TIME_FORMAT_ERROR_MESSAGE = "błędny czas rezerwacji";
     public static String ADD_COMPANY = "dodano firmę i utworzono użytkownika";
     
-    // INPUT TEST 
-    public static String IS_NOT_NULL_ERROR_MESSAGE = "nie wprowadzono danych / ";
-    public static String IS_LENGTH_APPROPRIATE_ERROR_MESSAGE = "długość wprowadzonego tekstu jest nieodpowiednia / ";
-    public static String IS_EEMAIL_ADDRESS_ERROR_MESSAGE = "nie przypomina adresu poczty elektronicznej / ";
-    public static String IS_NUMBER_ERROR_MESSAGE = "zawiera inne znaki niż cyfry / ";
+    // input test 
+    public static String IS_NOT_NULL_ERROR_MESSAGE = "nie wprowadzono danych | ";
+    public static String IS_LENGTH_APPROPRIATE_ERROR_MESSAGE = "długość wprowadzonego tekstu jest nieodpowiednia | ";
+    public static String IS_EEMAIL_ADDRESS_ERROR_MESSAGE = "nie przypomina adresu poczty elektronicznej | ";
+    public static String IS_NUMBER_ERROR_MESSAGE = "zawiera inne znaki niż cyfry | ";
+    
+    // auth
+    public static String CREDENCIALS_ERROR_MESSAGE = "niepoprawne dane logowania";
 }

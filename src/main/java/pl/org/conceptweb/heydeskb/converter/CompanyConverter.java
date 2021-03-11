@@ -18,7 +18,7 @@ public class CompanyConverter {
     @Autowired
     UserConverter userConverter;
 
-    public Company companyDbToCompany(CompanyDb companyDb) {
+    public Company companyDbToCompany(CompanyDb companyDb) throws NullPointerException{
 
         return new Company(
                 companyDb.getId(),
@@ -35,7 +35,7 @@ public class CompanyConverter {
         );
     }
 
-    public CompanyDb companyToCompanyDb(Company company) {
+    public CompanyDb companyToCompanyDb(Company company) throws NullPointerException{
 
         return new CompanyDb(
                 company.getId(),
@@ -58,7 +58,7 @@ public class CompanyConverter {
             companysDb.forEach(companyDb -> {
                 companys.add(companyDbToCompany(companyDb));
             });
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             log.log(Level.WARNING, "CompanyConverter: companysDbToCompanys: " + e);
         };
         return companys;
@@ -70,7 +70,7 @@ public class CompanyConverter {
             companys.forEach(company -> {
                 companysDb.add(companyToCompanyDb(company));
             });
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             log.log(Level.WARNING, "CompanyConverter: companysToCompanysDb: " + e);
         };
         return companysDb;
