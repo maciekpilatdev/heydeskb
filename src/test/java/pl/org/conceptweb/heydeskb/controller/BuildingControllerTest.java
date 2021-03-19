@@ -40,7 +40,7 @@ public class BuildingControllerTest {
     public void testAddBuilding() throws Exception {
         List<Long> floors = Arrays.asList(Long.parseLong("1"));
         Building building = new Building(Long.parseLong("1"), "1", floors, Long.parseLong("1"), Boolean.FALSE);
-        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("ok", "dodano budynek", Arrays.asList(building));
+        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(building));
         String requestJson = new Gson().toJson(building);
         when(buildingService.addBuilding(building)).thenReturn(httpResponseWrapper);
         mockMvc.perform(MockMvcRequestBuilders.post("/building").contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -51,7 +51,7 @@ public class BuildingControllerTest {
 
     @Test
     public void testGetBuildingListByCompany() throws Exception {
-        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("ok", "", Arrays.asList(1));
+        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(1));
         when(buildingService.getBuildingListByCompany()).thenReturn(httpResponseWrapper);
         mockMvc.perform(MockMvcRequestBuilders.get("/building"))
                 .andExpect(status().isOk())
@@ -60,7 +60,7 @@ public class BuildingControllerTest {
 
     @Test
     public void testDeleteBuilding() throws Exception {
-        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("ok", "deleted", Arrays.asList());
+        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList());
         when(buildingService.deleteBuilding(Long.parseLong("1"))).thenReturn(httpResponseWrapper);
         mockMvc.perform(MockMvcRequestBuilders.delete("/building")
                 .param("buildingId", "1"))
