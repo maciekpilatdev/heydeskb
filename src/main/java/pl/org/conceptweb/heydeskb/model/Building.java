@@ -10,7 +10,7 @@ import lombok.Data;
 public class Building {
     private Long id;
     private String name;
-    private List<FloorDb> floors;
-    private CompanyDb companyDb;
+    private List<Long> floors;
+    private Long companyDb;
     private Boolean isDeleted;
 }

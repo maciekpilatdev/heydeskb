@@ -18,7 +18,7 @@ public class CompanyConverter {
     @Autowired
     UserConverter userConverter;
 
-    public Company companyDbToCompany(CompanyDb companyDb) throws NullPointerException{
+    public Company companyDbToCompany(CompanyDb companyDb) throws NullPointerException {
 
         return new Company(
                 companyDb.getId(),
@@ -30,12 +30,12 @@ public class CompanyConverter {
                 companyDb.getPostalCode(),
                 companyDb.getCity(),
                 companyDb.getCountry(),
-                buildingConverter.buildingsDbToBuildings(companyDb.getBuildingDb()),
-                userConverter.usersToUsersTrans(companyDb.getUsers())
+                buildingConverter.buildingDbToIdList(companyDb.getBuildingDb()),
+                userConverter.usersToIdList(companyDb.getUsers())
         );
     }
 
-    public CompanyDb companyToCompanyDb(Company company) throws NullPointerException{
+    public CompanyDb companyToCompanyDb(Company company) throws NullPointerException {
 
         return new CompanyDb(
                 company.getId(),
@@ -47,8 +47,8 @@ public class CompanyConverter {
                 company.getPostalCode(),
                 company.getCity(),
                 company.getCountry(),
-                buildingConverter.buildingsToBuildingsDb(company.getBuildings()),
-                userConverter.usersTransToUsers(company.getUsersTrans())
+                buildingConverter.idListToBuildingDb(company.getBuildings()),
+                userConverter.idListToUsers(company.getUsersTrans())
         );
     }
 
@@ -59,11 +59,11 @@ public class CompanyConverter {
                 companys.add(companyDbToCompany(companyDb));
             });
         } catch (NullPointerException e) {
-            log.log(Level.WARNING, "CompanyConverter: companysDbToCompanys: " + e);
-        };
+            log.log(Level.WARNING, "CompanyConverter: companysDbToCompanys: ", e);
+        }
         return companys;
     }
-    
+
     public List<CompanyDb> companysToCompanysDb(List<Company> companys) {
         List<CompanyDb> companysDb = new ArrayList();
         try {
@@ -71,8 +71,8 @@ public class CompanyConverter {
                 companysDb.add(companyToCompanyDb(company));
             });
         } catch (NullPointerException e) {
-            log.log(Level.WARNING, "CompanyConverter: companysToCompanysDb: " + e);
-        };
+            log.log(Level.WARNING, "CompanyConverter: companysToCompanysDb: ", e);
+        }
         return companysDb;
     }
 }

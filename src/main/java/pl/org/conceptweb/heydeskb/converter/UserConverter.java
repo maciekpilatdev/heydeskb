@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import pl.org.conceptweb.heydeskb.model.User;
 import pl.org.conceptweb.heydeskb.model.UserTrans;
 import pl.org.conceptweb.heydeskb.repository.CompanyDbRepository;
+import pl.org.conceptweb.heydeskb.repository.UserRepository;
 
 @Component
 @Log
@@ -20,6 +21,8 @@ public class UserConverter {
     CompanyConverter companyConverter;
     @Autowired
     CompanyDbRepository companyDbRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public UserTrans userToUserTrans(User user) {
 
@@ -59,7 +62,7 @@ public class UserConverter {
                 usersTrans.add(userToUserTrans(user));
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "ERROR: UserConverter: usersToUsersTrans: " + e);
+            log.log(Level.WARNING, "ERROR: UserConverter: usersToUsersTrans: ", e);
         }
         return usersTrans;
     }
@@ -71,7 +74,31 @@ public class UserConverter {
                 users.add(userTransToUser(userTrans));
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "ERROR: UserConverter: usersTransToUsers: " + e);
+            log.log(Level.WARNING, "ERROR: UserConverter: usersTransToUsers: ", e);
+        }
+        return users;
+    }
+    
+         public List<Long> usersToIdList(List<User> users) {
+        List<Long> IdList = new ArrayList();
+        try {
+            users.forEach(deskDb -> {
+                IdList.add(deskDb.getId());
+            });
+        } catch (Exception e) {
+            log.log(Level.WARNING, "BuildingConverter: deskDbToIdList: ERROR: ", e);
+        }
+        return IdList;
+    }
+
+    public List<User> idListToUsers(List<Long> IdList) {
+        List<User> users = new ArrayList();
+        try {
+            IdList.forEach(desk -> {
+                users.add(userRepository.getOne(desk));
+            });
+        } catch (Exception e) {
+            log.log(Level.WARNING, "BuildingConverter: idListToDeskDb: ERROR: ", e);
         }
         return users;
     }

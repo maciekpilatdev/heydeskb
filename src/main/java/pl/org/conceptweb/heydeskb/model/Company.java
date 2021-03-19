@@ -16,6 +16,6 @@ private String streetNumber;
 private String postalCode;
 private String city;
 private String country;
-private List<Building> buildings;
-private List<UserTrans> usersTrans;
+private List<Long> buildings;
+private List<Long> usersTrans;
 }
