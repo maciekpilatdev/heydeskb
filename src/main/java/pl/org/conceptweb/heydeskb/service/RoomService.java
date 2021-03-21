@@ -41,7 +41,7 @@ public class RoomService {
     @Autowired
     TextInputStrategy textInputStrategy;
 
-    public HttpResponseWrapper addRoom(Room room) {
+    public HttpResponseWrapper add(Room room) {
         try {
             MethodResponse roomName = inputTester.runTest(textInputStrategy, room.getName());
             if (roomName.getStatus().equals(Constans.ERROR)) {
@@ -59,19 +59,19 @@ public class RoomService {
         }
     }
 
-    public HttpResponseWrapper getRoomListByCompany(String loggedUserName) {
+    public HttpResponseWrapper getListByCompany() {
         try {
-            return new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, roomConverter.roomsDbToRooms(roomDbRepository.findByCompanyId(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
+            return new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, roomConverter.roomsDbToRooms(roomDbRepository.findByCompanyId(userRepository.findByUserName(userService.getLogged().getUserName()).get().getCompanyDb().getId())));
         } catch (NullPointerException e) {
             log.log(Level.WARNING, "ERROR: RoomService: getRoomListByCompany: ", e);
             return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
     }
 
-    public HttpResponseWrapper deleteRoom(Long roomId, String loggedUserName) {
+    public HttpResponseWrapper delete(Long roomId) {
         RoomDb roomDb = roomDbRepository.getOne(roomId);
         try {
-            if (securityAuthoritiesCheck.hasAuthority(loggedUserName, Constans.INADEQUATE_DATA)) {
+            if (securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.INADEQUATE_DATA)) {
                 roomDb.setIsDeleted(true);
                 roomDbRepository.save(roomDb);
                 return new HttpResponseWrapper(Constans.OK, Constans.DELETE_FLOOR_SUCCESS_MESSAGE, new ArrayList());

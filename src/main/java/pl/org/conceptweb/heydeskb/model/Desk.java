@@ -17,5 +17,5 @@ public class Desk {
     private String name;
     private Boolean active;
     private Boolean isDeleted;
-    private List<DeskReservation> deskReservations;
+    private List<Long> deskReservations;
 }

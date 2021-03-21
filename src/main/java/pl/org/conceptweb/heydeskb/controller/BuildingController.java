@@ -25,12 +25,12 @@ public class BuildingController {
 
     @PostMapping
     public HttpResponseWrapper addBuilding(@RequestBody Building building) {
-        return buildingService.addBuilding(building);
+        return buildingService.add(building);
     }
 
     @GetMapping
     public HttpResponseWrapper getBuildingListByCompany() {
-        return buildingService.getBuildingListByCompany();
+        return buildingService.getListByCompany();
     }
 
     @DeleteMapping()

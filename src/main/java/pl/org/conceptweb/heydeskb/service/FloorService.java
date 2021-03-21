@@ -39,7 +39,7 @@ public class FloorService {
     @Autowired
     TextInputStrategy textInputStrategy;
 
-    public HttpResponseWrapper addFloor(Floor floor) {
+    public HttpResponseWrapper add(Floor floor) {
         try {
             MethodResponse floorName = inputTester.runTest(textInputStrategy, floor.getName());
             if (floorName.getStatus().equals(Constans.ERROR)) {
@@ -57,19 +57,19 @@ public class FloorService {
         }
     }
 
-    public HttpResponseWrapper getFloorListByCompany(String loggedUserName) {
+    public HttpResponseWrapper getListByCompany() {
         try {
-            return new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, floorConverter.floorsDbToFloors(floorDbRepository.findByCompany(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
+            return new HttpResponseWrapper(Constans.OK, Constans.GET_FLOOR_LIST_BY_COMPANY_SUCCESS_MESSAGE, floorConverter.floorsDbToFloors(floorDbRepository.findByCompany(userRepository.findByUserName(userService.getLogged().getUserName()).get().getCompanyDb().getId())));
         } catch (NullPointerException e) {
             log.log(Level.WARNING, "ERROR: FloorService: getFloorListByCompany: ", e);
             return new HttpResponseWrapper(Constans.ERROR, e.toString(), new ArrayList());
         }
     }
 
-    public HttpResponseWrapper deleteFloor(Long floorId, String loggedUserName) {
+    public HttpResponseWrapper delete(Long floorId) {
         FloorDb floorDb = floorDbRepository.getOne(floorId);
         try {
-            if (securityAuthoritiesCheck.hasAuthority(loggedUserName, Constans.AUTHORITY_ADMIN)) {
+            if (securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
                 floorDb.setIsDeleted(true);
                 floorDbRepository.save(floorDb);
                 return new HttpResponseWrapper(Constans.OK, Constans.DELETE_FLOOR_SUCCESS_MESSAGE, new ArrayList());

@@ -37,7 +37,7 @@ public class BuildingService {
     @Autowired
     TextInputStrategy textInputStrategy;
 
-    public HttpResponseWrapper addBuilding(Building building) {
+    public HttpResponseWrapper add(Building building) {
         try {
             MethodResponse buildingName = inputTester.runTest(textInputStrategy, building.getName());
             if (buildingName.getStatus().equals(Constans.ERROR)) {
@@ -57,7 +57,7 @@ public class BuildingService {
         }
     }
 
-    public HttpResponseWrapper getBuildingListByCompany() {
+    public HttpResponseWrapper getListByCompany() {
         try {
             return new HttpResponseWrapper(Constans.OK, Constans.GET_BUILDING_LIST_BY_COMPANY_SUCCESS_MESSAGE, buildingConverter.buildingsDbToBuildings(buildingDbRepository.findByCompany(userService.getLogged().getCompanyDb().getId())));
         } catch (Exception e) {

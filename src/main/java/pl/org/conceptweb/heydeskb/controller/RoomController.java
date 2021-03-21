@@ -29,21 +29,21 @@ public class RoomController {
 
     @PostMapping()
     public HttpResponseWrapper addRoom(@RequestBody Room room) {
-        return roomService.addRoom(room);
+        return roomService.add(room);
     }
 
     @GetMapping("/company")
-    public HttpResponseWrapper getRoomListByCompany(Principal principal) {
-        return roomService.getRoomListByCompany(principal.getName());
+    public HttpResponseWrapper getListByCompany() {
+        return roomService.getListByCompany();
     }
 
     @DeleteMapping()
-    public HttpResponseWrapper deleteRoom(@RequestParam Long roomId, Principal principal) {
-        return roomService.deleteRoom(roomId, principal.getName());
+    public HttpResponseWrapper deleteRoom(@RequestParam Long roomId) {
+        return roomService.delete(roomId);
     }
 
     @GetMapping("/company/combinator")
-    public HttpResponseWrapper getRoomListByCompany() {
+    public HttpResponseWrapper getListByCompanyCombinator() {
         return roomCombinatorService.getListDataByCompany();
     }
 }

@@ -1,12 +1,9 @@
 package pl.org.conceptweb.heydeskb.controller;
 
-import com.google.gson.Gson;
-import pl.org.conceptweb.heydeskb.model.Building;
-import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
-import pl.org.conceptweb.heydeskb.service.BuildingService;
 import static org.mockito.Mockito.*;
+import com.google.gson.Gson;
+import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import java.util.Arrays;
-import java.util.List;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -19,14 +16,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.org.conceptweb.heydeskb.model.Desk;
 import pl.org.conceptweb.heydeskb.security.MyUserDetailsService;
+import pl.org.conceptweb.heydeskb.service.DeskService;
 import pl.org.conceptweb.heydeskb.utility.JwtUtil;
 
-@WebMvcTest(BuildingController.class)
+@WebMvcTest(DeskController.class)
 @ExtendWith(SpringExtension.class)
 @WithMockUser(username = "admin", password = "pass", authorities = "ADMIN")
-public class BuildingControllerTest {
-
+public class DeskControllerTest {
+    
     @Autowired
     MockMvc mockMvc;
     @MockBean
@@ -34,36 +33,37 @@ public class BuildingControllerTest {
     @MockBean
     JwtUtil jwtUtil;
     @MockBean
-    private BuildingService buildingService;
-
+    private DeskService deskService;
+    
     @Test
-    public void testAddBuilding() throws Exception {
-        List<Long> floors = Arrays.asList(Long.parseLong("1"));
-        Building building = new Building(Long.parseLong("1"), "1", floors, Long.parseLong("1"), Boolean.FALSE);
-        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(building));
-        String requestJson = new Gson().toJson(building);
-        when(buildingService.add(building)).thenReturn(httpResponseWrapper);
-        mockMvc.perform(MockMvcRequestBuilders.post("/building").contentType(MediaType.APPLICATION_JSON_UTF8)
+    public void testAdd() throws Exception {
+  
+        Desk desk = new Desk(new Long(1), new Long(1), new Long(1), new Long(1), new Long(1), true, "1", true, false, Arrays.asList(new Long(1)));
+        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(desk));
+        String requestJson = new Gson().toJson(desk);
+        when(deskService.add(desk)).thenReturn(httpResponseWrapper);
+        mockMvc.perform(MockMvcRequestBuilders.post("/desk").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(requestJson))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result[0].name").value("1"));
     }
 
     @Test
-    public void testGetBuildingListByCompany() throws Exception {
+    public void testGetListByCompany() throws Exception {
         HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(1));
-        when(buildingService.getListByCompany()).thenReturn(httpResponseWrapper);
-        mockMvc.perform(MockMvcRequestBuilders.get("/building"))
+        when(deskService.getListByCompany()).thenReturn(httpResponseWrapper);
+        mockMvc.perform(MockMvcRequestBuilders.get("/desk/company"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result[0]").value("1"));
     }
 
     @Test
-    public void testDeleteBuilding() throws Exception {
+    public void testDelete() throws Exception {
         HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList());
-        when(buildingService.deleteBuilding(Long.parseLong("1"))).thenReturn(httpResponseWrapper);
-        mockMvc.perform(MockMvcRequestBuilders.delete("/building")
-                .param("buildingId", "1"))
+        when(deskService.delete(new Long(1))).thenReturn(httpResponseWrapper);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/desk")
+                .param("deskId", "1"))
                 .andExpect(status().isOk());
     }
+    
 }

@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.org.conceptweb.heydeskb.model.Desk;
 import pl.org.conceptweb.heydeskb.model.DeskDb;
-import pl.org.conceptweb.heydeskb.model.DeskReservationDb;
 import pl.org.conceptweb.heydeskb.repository.DeskDbRepository;
 import pl.org.conceptweb.heydeskb.repository.RoomDbRepository;
-import pl.org.conceptweb.heydeskb.model.DeskReservation;
 
 @Log
 @Component
@@ -25,13 +23,6 @@ public class DeskConverter {
     DeskReservationConverter deskReservationConverter;
 
     public Desk deskDbToDesk(DeskDb deskDb) {
-
-        List<DeskReservation> deskReservationsList = new ArrayList();
-
-        deskDb.getDeskReservations().forEach(deskReservation -> {
-            deskReservationsList.add(deskReservationConverter.deskReservationDbToDeskReservation(deskReservation));
-        }
-        );
         return new Desk(
                 deskDb.getId(),
                 deskDb.getBuildingId(),
@@ -42,21 +33,11 @@ public class DeskConverter {
                 deskDb.getName(),
                 deskDb.getActive(),
                 deskDb.getIsDeleted(),
-                deskReservationsList
+                deskReservationConverter.deskReservationsDbToIdList(deskDb.getDeskReservations())
         );
     }
 
     public DeskDb deskToDeskDb(Desk desk) {
-        List<DeskReservationDb> deskReservationDbsList = new ArrayList();
-
-        try {
-            desk.getDeskReservations().forEach(deskReservation -> {
-                deskReservationDbsList.add(deskReservationConverter.deskReservationToDeskReservationDb(deskReservation));
-            });
-        } catch (Exception e) {
-            log.log(java.util.logging.Level.WARNING, "DeskConverter: deskToDeskDb: ERROR: " + e);
-        }
-
         return new DeskDb(
                 desk.getId(),
                 desk.getBuildingId(),
@@ -67,7 +48,7 @@ public class DeskConverter {
                 desk.getName(),
                 desk.getActive(),
                 desk.getIsDeleted(),
-                deskReservationDbsList
+                deskReservationConverter.idListToDeskReservationsDb(desk.getDeskReservations())
         );
     }
 
@@ -78,7 +59,7 @@ public class DeskConverter {
                 desksDb.add(deskToDeskDb(desk));
             });
         } catch (Exception e) {
-            log.log(java.util.logging.Level.WARNING, "DeskReservationConverter: deskReservationsToDeskReservationsDb: ERROR: " + e);
+            log.log(java.util.logging.Level.WARNING, "DeskReservationConverter: deskReservationsToDeskReservationsDb: ERROR: ", e);
         }
         return desksDb;
     }
@@ -90,7 +71,7 @@ public class DeskConverter {
                 desks.add(deskDbToDesk(deskDb));
             });
         } catch (Exception e) {
-            log.log(java.util.logging.Level.WARNING, "DeskReservationConverter: deskReservationsDbToDeskReservations: ERROR: " + e);
+            log.log(java.util.logging.Level.WARNING, "DeskReservationConverter: deskReservationsDbToDeskReservations: ERROR: ", e);
         }
         return desks;
     }
@@ -102,7 +83,7 @@ public class DeskConverter {
                 desks.add(deskDb.getId());
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "DeskConverter: deskDbToIdList: ERROR: " + e);
+            log.log(Level.WARNING, "DeskConverter: deskDbToIdList: ERROR: ", e);
         }
         return desks;
     }
@@ -114,7 +95,7 @@ public class DeskConverter {
                 desksDb.add(deskDbRepository.getOne(desk));
             });
         } catch (Exception e) {
-            log.log(Level.WARNING, "DeskConverter: idListToDeskDb: ERROR: " + e);
+            log.log(Level.WARNING, "DeskConverter: idListToDeskDb: ERROR: ", e);
         }
         return desksDb;
     }

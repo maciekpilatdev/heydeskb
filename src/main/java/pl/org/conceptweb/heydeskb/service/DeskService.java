@@ -41,7 +41,7 @@ public class DeskService {
     @Autowired
     TextInputStrategy textInputStrategy;
 
-    public HttpResponseWrapper addDesk(Desk desk) {
+    public HttpResponseWrapper add(Desk desk) {
 
         desk.setIsDeleted(Boolean.FALSE);
         try {
@@ -61,19 +61,19 @@ public class DeskService {
         }
     }
 
-    public HttpResponseWrapper getDeskListByCompany(String loggedUserName) {
+    public HttpResponseWrapper getListByCompany() {
         try {
-            return new HttpResponseWrapper(Constans.OK, Constans.GET_DESK_LIST_BY_COMPANY_SUCCESS_MESSAGE, deskConverter.desksDbToDesks(deskDbRepository.findByCompanyId(userRepository.findByUserName(loggedUserName).get().getCompanyDb().getId())));
+            return new HttpResponseWrapper(Constans.OK, Constans.GET_DESK_LIST_BY_COMPANY_SUCCESS_MESSAGE, deskConverter.desksDbToDesks(deskDbRepository.findByCompanyId(userRepository.findByUserName(userService.getLogged().getUserName()).get().getCompanyDb().getId())));
         } catch (NullPointerException e) {
             log.log(Level.WARNING, "ERROR: DeskService: getDeskListByCompany: ", e);
             return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
         }
     }
 
-    public HttpResponseWrapper deleteDesk(Long deskId, String loggedUserName) {
+    public HttpResponseWrapper delete(Long deskId) {
         DeskDb deskDb = deskDbRepository.getOne(deskId);
         try {
-            if (securityAuthoritiesCheck.hasAuthority(loggedUserName, Constans.AUTHORITY_ADMIN)) {
+            if (securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
                 deskDb.setIsDeleted(true);
                 return new HttpResponseWrapper(Constans.OK, Constans.DELETE_DESK_SUCCESS_MESSAGE, Arrays.asList(deskDbRepository.save(deskDb)));
             } else {

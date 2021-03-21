@@ -29,21 +29,21 @@ public class FloorController {
 
     @PostMapping()
     public HttpResponseWrapper addFloor(@RequestBody Floor floor) {
-        return floorService.addFloor(floor);
+        return floorService.add(floor);
     }
 
     @GetMapping("/company")
-    public HttpResponseWrapper getFloorListByCompany(Principal principal) {
-        return floorService.getFloorListByCompany(principal.getName());
+    public HttpResponseWrapper getFloorListByCompany() {
+        return floorService.getListByCompany();
     }
 
     @DeleteMapping()
-    public HttpResponseWrapper deleteFloor(@RequestParam Long floorId, Principal principal) {
-        return floorService.deleteFloor(floorId, principal.getName());
+    public HttpResponseWrapper deleteFloor(@RequestParam Long floorId) {
+        return floorService.delete(floorId);
     }
 
     @GetMapping("/company/combinator")
-    public HttpResponseWrapper getCombinatedListByCompany(Principal principal) {
+    public HttpResponseWrapper getCombinatedListByCompany() {
         return floorDataCombinator.getListDataByCompany();
     }
 }

@@ -26,17 +26,17 @@ public class DeskController {
     
     @PostMapping()
     @CrossOrigin(origins = {"*", "http://localhost:8080", "http://localhost:4200"}, maxAge = 3600)
-    public HttpResponseWrapper addDesk(@RequestBody Desk desk) {
-        return deskService.addDesk(desk);
+    public HttpResponseWrapper add(@RequestBody Desk desk) {
+        return deskService.add(desk);
     }
 
     @GetMapping("/company")
-    public HttpResponseWrapper getDeskListByCompany(Principal principal) {
-        return deskService.getDeskListByCompany(principal.getName());
+    public HttpResponseWrapper getListByCompany() {
+        return deskService.getListByCompany();
     }
 
     @DeleteMapping()
-    public HttpResponseWrapper deleteDesk(@RequestParam Long deskId, Principal principal) {
-        return deskService.deleteDesk(deskId, principal.getName());
+    public HttpResponseWrapper delete(@RequestParam Long deskId) {
+        return deskService.delete(deskId);
     }
 }

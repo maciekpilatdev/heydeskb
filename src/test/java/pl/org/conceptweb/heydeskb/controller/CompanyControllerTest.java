@@ -4,7 +4,6 @@ import pl.org.conceptweb.heydeskb.model.Company;
 import pl.org.conceptweb.heydeskb.model.CompanyAndUser;
 import pl.org.conceptweb.heydeskb.service.CompanyService;
 import static org.mockito.Mockito.*;
-
 import com.google.gson.Gson;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import java.util.Arrays;
