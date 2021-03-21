@@ -38,6 +38,13 @@ public class BuildingDb {
         this.companyDb = companyDb;
         this.isDeleted = isDeleted;
     }
+    
+        public BuildingDb(String name, List<FloorDb> floors, CompanyDb companyDb, Boolean isDeleted) {
+        this.name = name;
+        this.floors = floors;
+        this.companyDb = companyDb;
+        this.isDeleted = isDeleted;
+    }
 
     public Long getId() {
         return id;

@@ -71,7 +71,7 @@ public class RoomService {
     public HttpResponseWrapper delete(Long roomId) {
         RoomDb roomDb = roomDbRepository.getOne(roomId);
         try {
-            if (securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.INADEQUATE_DATA)) {
+            if (securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
                 roomDb.setIsDeleted(true);
                 roomDbRepository.save(roomDb);
                 return new HttpResponseWrapper(Constans.OK, Constans.DELETE_FLOOR_SUCCESS_MESSAGE, new ArrayList());

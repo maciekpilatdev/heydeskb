@@ -37,7 +37,7 @@ public class BuildingService {
     @Autowired
     TextInputStrategy textInputStrategy;
 
-    public HttpResponseWrapper add(Building building) {
+    public HttpResponseWrapper add(BuildingDb building) {
         try {
             MethodResponse buildingName = inputTester.runTest(textInputStrategy, building.getName());
             if (buildingName.getStatus().equals(Constans.ERROR)) {
@@ -47,10 +47,9 @@ public class BuildingService {
             } else if (!securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
                 return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
             }
-            
-            BuildingDb buildingDb = buildingConverter.buildingToBuildingDb(building);
-            buildingDb.setCompanyDb(userService.getLogged().getCompanyDb());
-            return new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Arrays.asList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(buildingDb))));
+
+            building.setCompanyDb(userService.getLogged().getCompanyDb());
+            return new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Arrays.asList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(building))));
         } catch (Exception e) {
             log.log(Level.WARNING, "ERROR: BuildingService: addBuilding: ", e);
             return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());

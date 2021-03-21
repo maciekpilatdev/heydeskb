@@ -14,6 +14,7 @@ import pl.org.conceptweb.heydeskb.repository.CompanyDbRepository;
 @Component
 @Log
 public class BuildingConverter {
+
     @Autowired
     BuildingDbRepository buildingDbRepository;
     @Autowired
@@ -54,8 +55,8 @@ public class BuildingConverter {
         }
         return buildingsDb;
     }
-    
-     public List<Long> buildingDbToIdList(List<BuildingDb> buildingsDb) {
+
+    public List<Long> buildingDbToIdList(List<BuildingDb> buildingsDb) {
         List<Long> desks = new ArrayList();
         try {
             buildingsDb.forEach(deskDb -> {

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
-import pl.org.conceptweb.heydeskb.model.Building;
+import pl.org.conceptweb.heydeskb.model.BuildingDb;
 import pl.org.conceptweb.heydeskb.service.BuildingService;
 
 @Log
@@ -24,8 +24,8 @@ public class BuildingController {
     BuildingService buildingService;
 
     @PostMapping
-    public HttpResponseWrapper addBuilding(@RequestBody Building building) {
-        return buildingService.add(building);
+    public HttpResponseWrapper addBuilding(@RequestBody BuildingDb buildingDb) {
+        return buildingService.add(buildingDb);
     }
 
     @GetMapping
