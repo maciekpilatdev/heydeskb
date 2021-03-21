@@ -80,9 +80,9 @@ public class Constans {
     
     // input test 
     public static String IS_NOT_NULL_ERROR_MESSAGE = "nie wprowadzono danych ";
-    public static String IS_LENGTH_APPROPRIATE_ERROR_MESSAGE = "długość wprowadzonego tekstu jest nieodpowiednia | ";
-    public static String IS_EEMAIL_ADDRESS_ERROR_MESSAGE = "nie przypomina adresu poczty elektronicznej | ";
-    public static String IS_NUMBER_ERROR_MESSAGE = "zawiera inne znaki niż cyfry | ";
+    public static String IS_LENGTH_APPROPRIATE_ERROR_MESSAGE = "długość wprowadzonego tekstu jest nieodpowiednia ";
+    public static String IS_EEMAIL_ADDRESS_ERROR_MESSAGE = "nie przypomina adresu poczty elektronicznej ";
+    public static String IS_NUMBER_ERROR_MESSAGE = "zawiera inne znaki niż cyfry ";
     
     // auth
     public static String CREDENCIALS_ERROR_MESSAGE = "niepoprawne dane logowania";
