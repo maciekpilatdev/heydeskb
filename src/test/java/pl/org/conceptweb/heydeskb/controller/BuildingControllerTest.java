@@ -1,12 +1,9 @@
 package pl.org.conceptweb.heydeskb.controller;
 
-import com.google.gson.Gson;
-import pl.org.conceptweb.heydeskb.model.Building;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.service.BuildingService;
 import static org.mockito.Mockito.*;
 import java.util.Arrays;
-import java.util.List;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -19,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.org.conceptweb.heydeskb.model.BuildingDb;
 import pl.org.conceptweb.heydeskb.security.MyUserDetailsService;
 import pl.org.conceptweb.heydeskb.utility.JwtUtil;
 
@@ -34,19 +32,18 @@ public class BuildingControllerTest {
     @MockBean
     JwtUtil jwtUtil;
     @MockBean
-    private BuildingService buildingService;
+    BuildingService buildingService;
+    @MockBean
+    BuildingDb buildingDb;
 
     @Test
     public void testAddBuilding() throws Exception {
-        List<Long> floors = Arrays.asList(Long.parseLong("1"));
-        Building building = new Building(Long.parseLong("1"), "1", floors, Long.parseLong("1"), Boolean.FALSE);
-        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(building));
-        String requestJson = new Gson().toJson(building);
-        when(buildingService.add(building)).thenReturn(httpResponseWrapper);
-        mockMvc.perform(MockMvcRequestBuilders.post("/building").contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(requestJson))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result[0].name").value("1"));
+        HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(buildingDb));
+        when(buildingService.add(buildingDb)).thenReturn(httpResponseWrapper);
+        mockMvc.perform(MockMvcRequestBuilders.post("/building")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{}"))
+                .andExpect(status().isOk());                
     }
 
     @Test
