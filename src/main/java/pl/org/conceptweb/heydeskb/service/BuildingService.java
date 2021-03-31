@@ -2,9 +2,13 @@ package pl.org.conceptweb.heydeskb.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.org.conceptweb.heydeskb.constans.Constans;
 import pl.org.conceptweb.heydeskb.converter.BuildingConverter;
@@ -37,22 +41,23 @@ public class BuildingService {
     @Autowired
     TextInputStrategy textInputStrategy;
 
-    public HttpResponseWrapper add(BuildingDb building) {
+    @Async
+    public CompletableFuture<HttpResponseWrapper> add(BuildingDb building) {
         try {
             MethodResponse buildingName = inputTester.runTest(textInputStrategy, building.getName());
             if (buildingName.getStatus().equals(Constans.ERROR)) {
-                return new HttpResponseWrapper(Constans.ERROR, buildingName.getMessage(), new ArrayList());
+                return CompletableFuture.completedFuture(new HttpResponseWrapper(Constans.ERROR, buildingName.getMessage(), Collections.singletonList(null)));
             } else if (!isNameUnique(building.getName())) {
-                return new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, new ArrayList());
+                return CompletableFuture.completedFuture(new HttpResponseWrapper(Constans.ERROR, Constans.NAME_NOT_UNIQUE_ERROR_MESSAGE, Collections.singletonList(null)));
             } else if (!securityAuthoritiesCheck.hasAuthority(userService.getLogged().getUserName(), Constans.AUTHORITY_ADMIN)) {
-                return new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, new ArrayList());
+                return CompletableFuture.completedFuture(new HttpResponseWrapper(Constans.ERROR, Constans.HAS_AUTHORITY_ERROR_MESSAGE, Collections.singletonList(null)));
             }
-
+            
             building.setCompanyDb(userService.getLogged().getCompanyDb());
-            return new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Arrays.asList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(building))));
+            return CompletableFuture.completedFuture(new HttpResponseWrapper(Constans.OK, Constans.ADD_BUILDING_SUCCESS_MESSAGE, Collections.singletonList(buildingConverter.buildingDbToBuilding(buildingDbRepository.save(building)))));
         } catch (Exception e) {
             log.log(Level.WARNING, "ERROR: BuildingService: addBuilding: ", e);
-            return new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, new ArrayList());
+            return CompletableFuture.completedFuture(new HttpResponseWrapper(Constans.ERROR, Constans.INADEQUATE_DATA, Collections.singletonList(null)));
         }
     }
 

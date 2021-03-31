@@ -4,8 +4,6 @@ import com.sun.istack.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-//@Component
-//@EnableConfigurationProperties
 @Configuration
 @ConfigurationProperties(prefix = "app")
 public class AppConfiguration {

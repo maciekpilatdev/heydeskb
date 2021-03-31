@@ -6,6 +6,7 @@ public class Constans {
     public static String SUCCESS = "sukces"; //"success";
     public static String OK = "ok";
     public static String ERROR = "błąd"; //"error";
+    public static String TRY_LATER = "spróbuj później";
     public static String INADEQUATE_DATA = "nieodpowiednie dane";
     public static String AUTHORITY_ADMIN = "ADMIN";
     public static String AUTHORITY_USER = "USER";

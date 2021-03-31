@@ -1,5 +1,9 @@
 package pl.org.conceptweb.heydeskb.controller;
 
+import java.util.Collections;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.org.conceptweb.heydeskb.constans.Constans;
 import pl.org.conceptweb.heydeskb.model.HttpResponseWrapper;
 import pl.org.conceptweb.heydeskb.model.BuildingDb;
 import pl.org.conceptweb.heydeskb.service.BuildingService;
@@ -25,7 +30,12 @@ public class BuildingController {
 
     @PostMapping
     public HttpResponseWrapper addBuilding(@RequestBody BuildingDb buildingDb) {
-        return buildingService.add(buildingDb);
+        try {
+            return buildingService.add(buildingDb).get();
+        } catch (InterruptedException | ExecutionException ex) {
+            log.log(Level.WARNING, "ERROR: BuildingController: addBuilding: ", ex);
+            return new HttpResponseWrapper(Constans.ERROR, Constans.TRY_LATER, Collections.singletonList(null));
+        }
     }
 
     @GetMapping
