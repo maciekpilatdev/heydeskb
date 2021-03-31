@@ -39,7 +39,7 @@ public class BuildingControllerTest {
     @Test
     public void testAddBuilding() throws Exception {
         HttpResponseWrapper httpResponseWrapper = new HttpResponseWrapper("status", "message", Arrays.asList(buildingDb));
-        when(buildingService.add(buildingDb)).thenReturn(httpResponseWrapper);
+        when(buildingService.add(buildingDb).get()).thenReturn(httpResponseWrapper);
         mockMvc.perform(MockMvcRequestBuilders.post("/building")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{}"))
